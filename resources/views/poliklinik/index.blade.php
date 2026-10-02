@@ -12,15 +12,8 @@
     </div>
 </div>
 
-@if(session('success'))
-<div class="mb-4 p-4 rounded-lg bg-green-50 border border-green-200 flex items-center">
-    <i class="fa-solid fa-circle-check text-green-500 text-xl mr-3"></i>
-    <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
-</div>
-@endif
-
 <!-- Form Pembungkus untuk Hapus Data -->
-<form id="actionForm" method="POST" action="">
+<form id="actionForm" method="POST" action="" novalidate>
     @csrf
     <input type="hidden" name="_method" id="formMethod" value="">
 
@@ -29,25 +22,25 @@
             <table class="min-w-full border-collapse border border-slate-300 text-sm">
                 <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-center w-12">Pilih</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-center font-bold text-slate-700 uppercase">Kode Poli</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Nama Poliklinik</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Deskripsi</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-center font-bold text-slate-700 uppercase">Status</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Kode Poli</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Poliklinik</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Deskripsi</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Status</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     @forelse($polikliniks as $p)
                     <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $p->kode_poli }}').click()">
-                        <td class="border border-slate-300 px-4 py-3 text-center">
+                        <td class="border border-slate-300 px-3 py-2 text-center">
                             <input type="radio" name="selected_poli" id="radio_{{ $p->kode_poli }}" value="{{ $p->kode_poli }}" 
                                    class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
                                    onclick="enableButtons('{{ $p->kode_poli }}', '{{ $p->nama_poli }}'); event.stopPropagation();">
                         </td>
-                        <td class="border border-slate-300 px-4 py-3 text-center font-medium text-slate-900">{{ $p->kode_poli }}</td>
-                        <td class="border border-slate-300 px-4 py-3 font-semibold text-brand-700">{{ $p->nama_poli }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-slate-600">{{ $p->deskripsi ?? '-' }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-center">
+                        <td class="border border-slate-300 px-3 py-2 text-center font-medium text-slate-900">{{ $p->kode_poli }}</td>
+                        <td class="border border-slate-300 px-3 py-2 font-semibold text-brand-700">{{ $p->nama_poli }}</td>
+                        <td class="border border-slate-300 px-3 py-2 text-slate-600">{{ $p->deskripsi ?? '-' }}</td>
+                        <td class="border border-slate-300 px-3 py-2 text-center">
                             @if($p->status_aktif)
                                 <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-green-200">Aktif</span>
                             @else
@@ -147,14 +140,25 @@
     }
 
     function doDelete() {
-        if (selectedId && confirm('Apakah Anda yakin ingin menghapus data Poliklinik ini?')) {
-            const form = document.getElementById('actionForm');
-            const methodInput = document.getElementById('formMethod');
-            
-            form.action = `/poliklinik/${selectedId}`;
-            methodInput.value = 'DELETE';
-            form.submit();
-        }
+        if (!selectedId) return;
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            text: 'Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('actionForm');
+                form.action = `/poliklinik/${selectedId}`;
+                document.getElementById('formMethod').value = 'DELETE';
+                form.submit();
+            }
+        });
     }
+
 </script>
 @endsection

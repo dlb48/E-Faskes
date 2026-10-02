@@ -12,15 +12,8 @@
     </div>
 </div>
 
-@if(session('success'))
-<div class="mb-4 p-4 rounded-lg bg-green-50 border border-green-200 flex items-center">
-    <i class="fa-solid fa-circle-check text-green-500 text-xl mr-3"></i>
-    <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
-</div>
-@endif
-
 <!-- Form Pembungkus untuk Hapus Data -->
-<form id="actionForm" method="POST" action="">
+<form id="actionForm" method="POST" action="" novalidate>
     @csrf
     <input type="hidden" name="_method" id="formMethod" value="">
 
@@ -195,12 +188,24 @@
 
     function doDelete() {
         if (!selectedId) return;
-        if (confirm('Yakin ingin menghapus data pasien ini? Tindakan ini tidak dapat dibatalkan.')) {
-            const form = document.getElementById('actionForm');
-            form.action = `/pasien/${selectedId}`;
-            document.getElementById('formMethod').value = 'DELETE';
-            form.submit();
-        }
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            text: 'Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('actionForm');
+                form.action = `/pasien/${selectedId}`;
+                document.getElementById('formMethod').value = 'DELETE';
+                form.submit();
+            }
+        });
     }
+
 </script>
 @endsection

@@ -17,7 +17,7 @@
     <!-- Cari Pasien -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6 p-6">
         <h3 class="text-lg font-semibold text-slate-800 mb-4 pb-2 border-b border-slate-100">Cari Data Pasien</h3>
-        <form action="{{ route('pendaftaran.create') }}" method="GET" class="flex gap-3">
+        <form action="{{ route('pendaftaran.create') }}" method="GET" class="flex gap-3" novalidate>
             <input type="text" name="search" value="{{ $search }}" placeholder="Ketik NIK, Nama, atau No. RM..." class="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
             <button type="submit" class="px-5 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-900 shadow-sm transition-colors">
                 Cari
@@ -30,7 +30,7 @@
 
     <!-- Form Pendaftaran -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <form action="{{ route('pendaftaran.store') }}" method="POST" class="p-6">
+        <form action="{{ route('pendaftaran.store') }}" method="POST" class="p-6" novalidate>
             @csrf
             
             <h3 class="text-lg font-semibold text-slate-800 mb-4 pb-2 border-b border-slate-100">1. Pilih Pasien</h3>

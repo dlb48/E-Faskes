@@ -30,7 +30,7 @@
             <h2 class="font-semibold text-slate-800"><i class="fa-solid fa-user-tie text-brand-500 mr-2"></i>Data Profil Pegawai</h2>
         </div>
         
-        <form action="{{ route('pegawai.store') }}" method="POST" class="p-6" id="formCreate">
+        <form action="{{ route('pegawai.store') }}" method="POST" class="p-6" id="formCreate" novalidate>
             @csrf
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

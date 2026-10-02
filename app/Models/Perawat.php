@@ -6,15 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Dokter extends Model
+class Perawat extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = 'id_dokter';
+    protected $table = 'perawats';
+    protected $primaryKey = 'id_perawat';
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'id_perawat',
+        'nip',
+        'poliklinik_id',
+        'no_str',
+        'masa_berlaku_str',
+    ];
 
     public function pegawai()
     {

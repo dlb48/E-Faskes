@@ -14,7 +14,7 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <form action="{{ route('pasien.update', $pasien->nik) }}" method="POST" class="p-6">
+        <form novalidate action="{{ route('pasien.update', $pasien->nik) }}" method="POST" class="p-6">
             @csrf
             @method('PUT')
             
@@ -415,5 +415,6 @@
     });
 </script>
 @endsection
+
 
 

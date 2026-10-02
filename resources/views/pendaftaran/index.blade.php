@@ -19,13 +19,6 @@
     </div>
 </div>
 
-@if(session('success'))
-<div class="mb-6 p-4 rounded-lg bg-green-50 border border-green-200 flex items-center">
-    <i class="fa-solid fa-circle-check text-green-500 text-xl mr-3"></i>
-    <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
-</div>
-@endif
-
 <!-- Kartu Konten Utama -->
 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
     

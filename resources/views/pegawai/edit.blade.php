@@ -30,7 +30,7 @@
             <h2 class="font-semibold text-slate-800"><i class="fa-solid fa-user-tie text-amber-500 mr-2"></i>Data Profil Pegawai</h2>
         </div>
         
-        <form action="{{ route('pegawai.update', $pegawai->nip) }}" method="POST" class="p-6" id="formEdit">
+        <form novalidate action="{{ route('pegawai.update', $pegawai->nip) }}" method="POST" class="p-6" id="formEdit">
             @csrf
             @method('PUT')
             
@@ -147,3 +147,4 @@
     </div>
 </div>
 @endsection
+

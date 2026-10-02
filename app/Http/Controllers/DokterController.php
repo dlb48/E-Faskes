@@ -33,11 +33,14 @@ class DokterController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_dokter' => 'required|unique:dokters,id_dokter',
-            'nip' => 'required|unique:dokters,nip|exists:pegawai,nip',
+            'id_dokter' => 'required|unique:dokters,id_dokter|unique:perawats,id_perawat',
+            'nip' => 'required|unique:dokters,nip|unique:perawats,nip|exists:pegawai,nip',
             'no_sip' => 'required',
             'masa_berlaku_sip' => 'required|date',
             'poliklinik_id' => 'required|exists:poliklinik,kode_poli',
+        ], [
+            'id_dokter.unique' => 'Kode ini sudah digunakan oleh Dokter atau Perawat lain.',
+            'nip.unique' => 'Pegawai ini sudah didaftarkan sebagai Dokter atau Perawat.',
         ]);
 
         Dokter::create([

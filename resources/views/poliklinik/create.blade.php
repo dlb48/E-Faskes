@@ -30,7 +30,7 @@
             <h2 class="font-semibold text-slate-800"><i class="fa-solid fa-stethoscope text-brand-500 mr-2"></i>Informasi Poliklinik</h2>
         </div>
         
-        <form action="{{ route('poliklinik.store') }}" method="POST" class="p-6">
+        <form action="{{ route('poliklinik.store') }}" method="POST" class="p-6" novalidate>
             @csrf
             
             <div class="grid grid-cols-1 gap-6 mb-6">

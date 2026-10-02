@@ -3,96 +3,178 @@
 @section('title', 'Beranda')
 
 @section('content')
-<div class="pt-6 pb-12 max-w-7xl mx-auto">
-
-    <!-- Kelompok 1: Layanan & Operasional -->
-    <div class="mb-10">
-        <div class="flex items-center mb-5">
-            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mr-3 shadow-sm">
-                <i class="fa-solid fa-stethoscope"></i>
-            </div>
-            <h2 class="text-xl font-bold text-slate-800">Layanan & Operasional</h2>
-            <div class="h-px bg-slate-200 flex-grow ml-6"></div>
-        </div>
-        
-        <div class="flex flex-wrap justify-start gap-4 sm:gap-6">
-            <a href="{{ route('pendaftaran.index') }}" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-blue-400 hover:bg-blue-50 transition-all font-bold text-slate-700 hover:text-blue-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-clipboard-user mb-4 text-slate-400 group-hover:text-blue-500 text-4xl transition-colors"></i> 
-                Pendaftaran
-            </a>
-            
-            <a href="#" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-blue-400 hover:bg-blue-50 transition-all font-bold text-slate-700 hover:text-blue-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-stethoscope mb-4 text-slate-400 group-hover:text-blue-500 text-4xl transition-colors"></i> 
-                Rawat Jalan
-            </a>
-
-            <a href="#" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-blue-400 hover:bg-blue-50 transition-all font-bold text-slate-700 hover:text-blue-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-bed-pulse mb-4 text-slate-400 group-hover:text-blue-500 text-4xl transition-colors"></i> 
-                Rawat Inap
-            </a>
+<div class="w-full">
+    
+    <!-- Combo Box Utama diletakkan di bawah menu bar (full width) -->
+    <div class="w-full relative mb-6">
+        <select id="groupSelect" onchange="showGroup(this.value)" class="block w-full pl-4 pr-10 py-2.5 text-slate-700 font-bold border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm rounded-lg shadow-sm bg-white cursor-pointer appearance-none transition-all hover:border-brand-300">
+            <option value="" class="text-slate-400">-- Pilih Kelompok Menu / Tampilan Layar Kosong --</option>
+            <option value="group1">Layanan & Operasional</option>
+            <option value="group2">Master Data</option>
+            <option value="group3">Kepegawaian</option>
+            <option value="group4">Farmasi & Keuangan</option>
+            <option value="group5">Pengaturan</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+            <i class="fa-solid fa-chevron-down text-sm"></i>
         </div>
     </div>
 
-    <!-- Kelompok 2: Master Data -->
-    <div class="mb-10">
-        <div class="flex items-center mb-5">
-            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3 shadow-sm">
-                <i class="fa-solid fa-database"></i>
+    <!-- Container Menus -->
+    <div id="menusContainer" class="mt-4 transition-all duration-300">
+        
+        <!-- Kelompok 1: Layanan & Operasional -->
+        <div id="group1" class="menu-group hidden fade-in">
+            <div class="mb-4 border-b border-slate-200 pb-2">
+                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-stethoscope text-blue-500 mr-2"></i> Layanan & Operasional</h2>
             </div>
-            <h2 class="text-xl font-bold text-slate-800">Master Data</h2>
-            <div class="h-px bg-slate-200 flex-grow ml-6"></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <a href="{{ route('pendaftaran.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-blue-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-clipboard-user text-slate-400 group-hover:text-blue-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-blue-700 text-sm">Pendaftaran</span>
+                </a>
+                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-blue-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-stethoscope text-slate-400 group-hover:text-blue-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-blue-700 text-sm">Rawat Jalan</span>
+                </a>
+                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-blue-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-bed-pulse text-slate-400 group-hover:text-blue-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-blue-700 text-sm">Rawat Inap</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Kelompok 2: Master Data -->
+        <div id="group2" class="menu-group hidden fade-in">
+            <div class="mb-4 border-b border-slate-200 pb-2">
+                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-database text-emerald-500 mr-2"></i> Master Data</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <a href="{{ route('poliklinik.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-emerald-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-house-medical text-slate-400 group-hover:text-emerald-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-emerald-700 text-sm">Poliklinik</span>
+                </a>
+                <a href="{{ route('pasien.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-emerald-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-users text-slate-400 group-hover:text-emerald-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-emerald-700 text-sm">Data Pasien</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Kelompok 3: Kepegawaian -->
+        <div id="group3" class="menu-group hidden fade-in">
+            <div class="mb-4 border-b border-slate-200 pb-2">
+                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-id-card-clip text-indigo-500 mr-2"></i> Kepegawaian</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-indigo-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-indigo-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-building-user text-slate-400 group-hover:text-indigo-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-indigo-700 text-sm">Departemen</span>
+                </a>
+                <a href="{{ route('pegawai.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-indigo-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-indigo-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-user-tie text-slate-400 group-hover:text-indigo-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-indigo-700 text-sm">Pegawai</span>
+                </a>
+                <a href="{{ route('dokter.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-indigo-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-indigo-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-user-doctor text-slate-400 group-hover:text-indigo-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-indigo-700 text-sm">Dokter</span>
+                </a>
+                <a href="{{ route('perawat.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-indigo-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-indigo-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-user-nurse text-slate-400 group-hover:text-indigo-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-indigo-700 text-sm">Perawat</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Kelompok 4: Farmasi & Keuangan -->
+        <div id="group4" class="menu-group hidden fade-in">
+            <div class="mb-4 border-b border-slate-200 pb-2">
+                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-pills text-amber-500 mr-2"></i> Farmasi & Keuangan</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-prescription-bottle-medical text-slate-400 group-hover:text-amber-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-amber-700 text-sm">Apotek</span>
+                </a>
+                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-amber-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-cash-register text-slate-400 group-hover:text-amber-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-amber-700 text-sm">Kasir</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Kelompok 5: Pengaturan -->
+        <div id="group5" class="menu-group hidden fade-in">
+            <div class="mb-4 border-b border-slate-200 pb-2">
+                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-gear text-slate-500 mr-2"></i> Pengaturan</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <a href="{{ route('sampah.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-slate-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-slate-200 transition-colors shrink-0">
+                        <i class="fa-solid fa-trash-can text-slate-400 group-hover:text-slate-700 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-slate-900 text-sm">Sampah</span>
+                </a>
+                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-slate-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-slate-200 transition-colors shrink-0">
+                        <i class="fa-solid fa-desktop text-slate-400 group-hover:text-slate-700 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-slate-900 text-sm">Aplikasi</span>
+                </a>
+            </div>
         </div>
         
-        <div class="flex flex-wrap justify-start gap-4 sm:gap-6">
-            <a href="{{ route('poliklinik.index') }}" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-emerald-400 hover:bg-emerald-50 transition-all font-bold text-slate-700 hover:text-emerald-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-house-medical mb-4 text-slate-400 group-hover:text-emerald-500 text-4xl transition-colors"></i> 
-                Poliklinik
-            </a>
-
-            <a href="{{ route('pasien.index') }}" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-emerald-400 hover:bg-emerald-50 transition-all font-bold text-slate-700 hover:text-emerald-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-users mb-4 text-slate-400 group-hover:text-emerald-500 text-4xl transition-colors"></i> 
-                Data Pasien
-            </a>
-            
-            <a href="{{ route('pegawai.index') }}" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-emerald-400 hover:bg-emerald-50 transition-all font-bold text-slate-700 hover:text-emerald-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-user-tie mb-4 text-slate-400 group-hover:text-emerald-500 text-4xl transition-colors"></i> 
-                Data Pegawai
-            </a>
-
-            <a href="{{ route('dokter.index') }}" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-emerald-400 hover:bg-emerald-50 transition-all font-bold text-slate-700 hover:text-emerald-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-user-doctor mb-4 text-slate-400 group-hover:text-emerald-500 text-4xl transition-colors"></i> 
-                Dokter
-            </a>
-
-            <a href="#" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-emerald-400 hover:bg-emerald-50 transition-all font-bold text-slate-700 hover:text-emerald-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-user-nurse mb-4 text-slate-400 group-hover:text-emerald-500 text-4xl transition-colors"></i> 
-                Perawat
-            </a>
-        </div>
     </div>
-
-    <!-- Kelompok 3: Farmasi & Keuangan -->
-    <div>
-        <div class="flex items-center mb-5">
-            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center mr-3 shadow-sm">
-                <i class="fa-solid fa-pills"></i>
-            </div>
-            <h2 class="text-xl font-bold text-slate-800">Farmasi & Keuangan</h2>
-            <div class="h-px bg-slate-200 flex-grow ml-6"></div>
-        </div>
-        
-        <div class="flex flex-wrap justify-start gap-4 sm:gap-6">
-            <a href="#" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-amber-400 hover:bg-amber-50 transition-all font-bold text-slate-700 hover:text-amber-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-prescription-bottle-medical mb-4 text-slate-400 group-hover:text-amber-500 text-4xl transition-colors"></i> 
-                Apotek
-            </a>
-            
-            <a href="#" class="px-8 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-amber-400 hover:bg-amber-50 transition-all font-bold text-slate-700 hover:text-amber-700 text-lg flex flex-col items-center min-w-[170px] group">
-                <i class="fa-solid fa-cash-register mb-4 text-slate-400 group-hover:text-amber-500 text-4xl transition-colors"></i> 
-                Kasir
-            </a>
-        </div>
-    </div>
-
 </div>
+
+<style>
+    .fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    function showGroup(groupId) {
+        // Sembunyikan semua grup
+        document.querySelectorAll('.menu-group').forEach(el => {
+            el.classList.add('hidden');
+        });
+        
+        // Tampilkan grup yang dipilih
+        if (groupId) {
+            document.getElementById(groupId).classList.remove('hidden');
+        }
+    }
+    
+    // Inisialisasi status awal (kosong)
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('groupSelect').value = '';
+    });
+</script>
 @endsection

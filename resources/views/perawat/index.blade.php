@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Data Pegawai')
+@section('title', 'Data Master perawat')
 
 @section('content')
 <div class="flex justify-between items-center mb-4">
     <div class="flex items-center gap-3">
-        <h1 class="text-2xl font-bold text-slate-900">Data Pegawai</h1>
+        <h1 class="text-2xl font-bold text-slate-900">Data Master perawat</h1>
         <span class="bg-brand-100 text-brand-700 py-1 px-3 rounded-full text-xs font-bold border border-brand-200">
-            {{ $pegawais->count() }} Total
+            {{ $perawats->count() }} perawat
         </span>
     </div>
 </div>
@@ -23,40 +23,32 @@
                 <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
                         <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">NIP</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Lengkap</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Departemen</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Jabatan</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Status Karyawan</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Status Aktif</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Kode perawat</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama perawat (Pegawai)</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">No. STR</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Masa Berlaku STR</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Poliklinik / Spesialisasi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
-                    @forelse($pegawais as $p)
-                    <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $p->nip }}').click()">
+                    @forelse($perawats as $d)
+                    <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $d->id_perawat }}').click()">
                         <td class="border border-slate-300 px-3 py-2 text-center">
-                            <input type="radio" name="selected_p" id="radio_{{ $p->nip }}" value="{{ $p->nip }}" 
+                            <input type="radio" name="selected_d" id="radio_{{ $d->id_perawat }}" value="{{ $d->id_perawat }}" 
                                    class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                   onclick="enableButtons('{{ $p->nip }}', '{{ $p->nama_lengkap }}'); event.stopPropagation();">
+                                   onclick="enableButtons('{{ $d->id_perawat }}', '{{ $d->pegawai->nama_lengkap }}'); event.stopPropagation();">
                         </td>
-                        <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $p->nip }}</td>
-                        <td class="border border-slate-300 px-3 py-2 font-semibold text-brand-700">{{ $p->nama_lengkap }}</td>
-                        <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $p->departemen }}</td>
-                        <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $p->jabatan }}</td>
-                        <td class="border border-slate-300 px-3 py-2 text-slate-600">{{ $p->status_karyawan }}</td>
-                        <td class="border border-slate-300 px-3 py-2 text-center">
-                            @if($p->status_aktif)
-                                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-green-200">Aktif</span>
-                            @else
-                                <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-red-200">Nonaktif</span>
-                            @endif
-                        </td>
+                        <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->id_perawat }}</td>
+                        <td class="border border-slate-300 px-3 py-2 font-semibold text-brand-700">{{ $d->pegawai->nama_lengkap }}</td>
+                        <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->no_str }}</td>
+                        <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ \Carbon\Carbon::parse($d->masa_berlaku_str)->format('d M Y') }}</td>
+                        <td class="border border-slate-300 px-3 py-2 font-medium text-slate-800">{{ $d->poliklinik ? $d->poliklinik->nama_poli : '-' }}</td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-slate-500 border border-slate-300">
-                            <i class="fa-solid fa-user-tie text-4xl mb-3 text-slate-300 block"></i>
-                            Belum ada data pegawai.
+                        <td colspan="6" class="px-4 py-8 text-center text-slate-500 border border-slate-300">
+                            <i class="fa-solid fa-user-doctor text-4xl mb-3 text-slate-300 block"></i>
+                            Belum ada data perawat yang diregistrasi dari pegawai.
                         </td>
                     </tr>
                     @endforelse
@@ -65,7 +57,7 @@
         </div>
     </div>
 
-    <!-- Button Bar Bawah (Fixed di Bawah Layar) -->
+    <!-- Button Bar Bawah -->
     <div class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 z-50 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)] transition-all" id="buttonBar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center justify-between gap-4">
             
@@ -74,7 +66,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fa-solid fa-search text-slate-400 text-sm"></i>
                     </div>
-                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari pegawai..." class="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 w-full transition-all bg-slate-50">
+                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari perawat..." class="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 w-full transition-all bg-slate-50">
                 </div>
                 
                 <div class="text-xs text-slate-500 hidden lg:flex items-center">
@@ -84,8 +76,8 @@
             </div>
             
             <div class="flex items-center gap-2 overflow-x-auto shrink-0 pb-1 md:pb-0">
-                <a href="{{ route('pegawai.create') }}" class="whitespace-nowrap bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
-                    <i class="fa-solid fa-plus mr-1.5"></i> Tambah
+                <a href="{{ route('perawat.create') }}" class="whitespace-nowrap bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
+                    <i class="fa-solid fa-plus mr-1.5"></i> Tambah perawat
                 </a>
                 
                 <div class="h-6 w-px bg-slate-300 mx-1 hidden sm:block"></div>
@@ -139,7 +131,7 @@
 
     function doEdit() {
         if (selectedId) {
-            window.location.href = `/pegawai/${selectedId}/edit`;
+            window.location.href = `/perawat/${selectedId}/edit`;
         }
     }
 
@@ -157,7 +149,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const form = document.getElementById('actionForm');
-                form.action = `/pegawai/${selectedId}`;
+                form.action = `/perawat/${selectedId}`;
                 document.getElementById('formMethod').value = 'DELETE';
                 form.submit();
             }

@@ -14,7 +14,7 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <form action="{{ route('pasien.store') }}" method="POST" class="p-6">
+        <form action="{{ route('pasien.store') }}" method="POST" class="p-6" novalidate>
             @csrf
             
             <!-- SECTION 1: Identitas Utama -->

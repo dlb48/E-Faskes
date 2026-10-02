@@ -33,3 +33,13 @@ Route::resource('pegawai', PegawaiController::class);
 // Master Dokter
 use App\Http\Controllers\DokterController;
 Route::resource('dokter', DokterController::class);
+
+// Master Perawat
+use App\Http\Controllers\PerawatController;
+Route::resource('perawat', PerawatController::class);
+
+// Tempat Sampah
+use App\Http\Controllers\SampahController;
+Route::get('/sampah', [SampahController::class, 'index'])->name('sampah.index');
+Route::post('/sampah/{type}/{id}/restore', [SampahController::class, 'restore'])->name('sampah.restore');
+Route::delete('/sampah/{type}/{id}', [SampahController::class, 'forceDelete'])->name('sampah.forceDelete');

@@ -12,15 +12,8 @@
     </div>
 </div>
 
-@if(session('success'))
-<div class="mb-4 p-4 rounded-lg bg-green-50 border border-green-200 flex items-center">
-    <i class="fa-solid fa-circle-check text-green-500 text-xl mr-3"></i>
-    <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
-</div>
-@endif
-
 <!-- Form Pembungkus untuk Hapus Data -->
-<form id="actionForm" method="POST" action="">
+<form id="actionForm" method="POST" action="" novalidate>
     @csrf
     <input type="hidden" name="_method" id="formMethod" value="">
 
@@ -29,27 +22,27 @@
             <table class="min-w-full border-collapse border border-slate-300 text-sm">
                 <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-center w-12">Pilih</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Kode Dokter</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Nama Dokter (Pegawai)</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">No. SIP</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Masa Berlaku SIP</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Poliklinik / Spesialisasi</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Kode Dokter</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Dokter (Pegawai)</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">No. SIP</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Masa Berlaku SIP</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Poliklinik / Spesialisasi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
                     @forelse($dokters as $d)
                     <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $d->id_dokter }}').click()">
-                        <td class="border border-slate-300 px-4 py-3 text-center">
+                        <td class="border border-slate-300 px-3 py-2 text-center">
                             <input type="radio" name="selected_d" id="radio_{{ $d->id_dokter }}" value="{{ $d->id_dokter }}" 
                                    class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
                                    onclick="enableButtons('{{ $d->id_dokter }}', '{{ $d->pegawai->nama_lengkap }}'); event.stopPropagation();">
                         </td>
-                        <td class="border border-slate-300 px-4 py-3 font-medium text-slate-900">{{ $d->id_dokter }}</td>
-                        <td class="border border-slate-300 px-4 py-3 font-semibold text-brand-700">{{ $d->pegawai->nama_lengkap }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-slate-700">{{ $d->no_sip }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-slate-700">{{ \Carbon\Carbon::parse($d->masa_berlaku_sip)->format('d M Y') }}</td>
-                        <td class="border border-slate-300 px-4 py-3 font-medium text-slate-800">{{ $d->poliklinik ? $d->poliklinik->nama_poli : '-' }}</td>
+                        <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->id_dokter }}</td>
+                        <td class="border border-slate-300 px-3 py-2 font-semibold text-brand-700">{{ $d->pegawai->nama_lengkap }}</td>
+                        <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->no_sip }}</td>
+                        <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ \Carbon\Carbon::parse($d->masa_berlaku_sip)->format('d M Y') }}</td>
+                        <td class="border border-slate-300 px-3 py-2 font-medium text-slate-800">{{ $d->poliklinik ? $d->poliklinik->nama_poli : '-' }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -143,14 +136,25 @@
     }
 
     function doDelete() {
-        if (selectedId && confirm('Apakah Anda yakin ingin menghapus data dokter ini?')) {
-            const form = document.getElementById('actionForm');
-            const methodInput = document.getElementById('formMethod');
-            
-            form.action = `/dokter/${selectedId}`;
-            methodInput.value = 'DELETE';
-            form.submit();
-        }
+        if (!selectedId) return;
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            text: 'Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('actionForm');
+                form.action = `/dokter/${selectedId}`;
+                document.getElementById('formMethod').value = 'DELETE';
+                form.submit();
+            }
+        });
     }
+
 </script>
 @endsection
