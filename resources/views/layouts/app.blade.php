@@ -31,14 +31,11 @@
                         <a href="{{ route('pendaftaran.index') }}" class="{{ request()->routeIs('pendaftaran.*') ? 'border-brand-500 text-brand-600' : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700' }} inline-flex items-center px-3 pt-1 border-b-2 text-sm font-medium transition-colors">
                             <i class="fa-solid fa-clipboard-user mr-2"></i> Pendaftaran
                         </a>
-                        <a href="{{ route('pasien.index') }}" class="{{ request()->routeIs('pasien.*') ? 'border-brand-500 text-brand-600' : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700' }} inline-flex items-center px-3 pt-1 border-b-2 text-sm font-medium transition-colors">
-                            <i class="fa-solid fa-users mr-2"></i> Data Pasien
+                        <a href="#" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-3 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-stethoscope mr-2"></i> Rawat Jalan
                         </a>
-                        <a href="{{ route('poliklinik.index') }}" class="{{ request()->routeIs('poliklinik.*') ? 'border-brand-500 text-brand-600' : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700' }} inline-flex items-center px-3 pt-1 border-b-2 text-sm font-medium transition-colors">
-                            <i class="fa-solid fa-stethoscope mr-2"></i> Poliklinik
-                        </a>
-                        <a href="{{ route('tenaga-medis.index') }}" class="{{ request()->routeIs('tenaga-medis.*') ? 'border-brand-500 text-brand-600' : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700' }} inline-flex items-center px-3 pt-1 border-b-2 text-sm font-medium transition-colors">
-                            <i class="fa-solid fa-user-doctor mr-2"></i> Tenaga Medis
+                        <a href="#" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-3 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-bed-pulse mr-2"></i> Rawat Inap
                         </a>
                         <a href="#" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-3 pt-1 border-b-2 text-sm font-medium transition-colors">
                             <i class="fa-solid fa-pills mr-2"></i> Apotek

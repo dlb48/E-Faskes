@@ -30,7 +30,7 @@
             <h2 class="font-semibold text-slate-800"><i class="fa-solid fa-stethoscope text-amber-500 mr-2"></i>Informasi Poliklinik</h2>
         </div>
         
-        <form action="{{ route('poliklinik.update', $poliklinik->id) }}" method="POST" class="p-6">
+        <form action="{{ route('poliklinik.update', $poliklinik->kode_poli) }}" method="POST" class="p-6">
             @csrf
             @method('PUT')
             

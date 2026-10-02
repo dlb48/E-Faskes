@@ -41,21 +41,21 @@ class PendaftaranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pasien_id' => 'required|exists:pasien,id',
-            'poliklinik_id' => 'required|exists:poliklinik,id',
+            'nik_pasien' => 'required|exists:pasien,nik',
+            'kode_poli' => 'required|exists:poliklinik,kode_poli',
             'jenis_pasien' => 'required|in:Umum,BPJS'
         ]);
 
-        $poliklinik = Poliklinik::find($request->poliklinik_id);
-        $jumlahHariIni = Pendaftaran::where('poliklinik_id', $poliklinik->id)
+        $poliklinik = Poliklinik::find($request->kode_poli);
+        $jumlahHariIni = Pendaftaran::where('kode_poli', $poliklinik->kode_poli)
             ->whereDate('tanggal_periksa', Carbon::today())
             ->count();
             
         $no_antrean = $poliklinik->kode_poli . '-' . str_pad($jumlahHariIni + 1, 3, '0', STR_PAD_LEFT);
 
         Pendaftaran::create([
-            'pasien_id' => $request->pasien_id,
-            'poliklinik_id' => $poliklinik->id,
+            'nik_pasien' => $request->nik_pasien,
+            'kode_poli' => $poliklinik->kode_poli,
             'no_antrean' => $no_antrean,
             'jenis_pasien' => $request->jenis_pasien,
             'sumber_daftar' => 'On-Site',

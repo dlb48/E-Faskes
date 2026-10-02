@@ -50,9 +50,9 @@
                 </thead>
                 <tbody class="bg-white">
                     @forelse($pasiens as $p)
-                    <tr class="hover:bg-brand-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $p->id }}').click();">
+                    <tr class="hover:bg-brand-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $p->nik }}').click();">
                         <td class="border border-slate-300 px-3 py-2 whitespace-nowrap text-center">
-                            <input type="radio" name="selected_pasien" id="radio_{{ $p->id }}" value="{{ $p->id }}" class="w-4 h-4 text-brand-600 focus:ring-brand-500 cursor-pointer" onchange="enableButtons('{{ $p->id }}')">
+                            <input type="radio" name="selected_pasien" id="radio_{{ $p->nik }}" value="{{ $p->nik }}" class="w-4 h-4 text-brand-600 focus:ring-brand-500 cursor-pointer" onchange="enableButtons('{{ $p->nik }}')">
                         </td>
                         <td class="border border-slate-300 px-3 py-2 whitespace-nowrap font-mono text-slate-900 font-medium">{{ $p->no_rm }}</td>
                         <td class="border border-slate-300 px-3 py-2 whitespace-nowrap font-bold text-slate-900">{{ $p->nama }}</td>

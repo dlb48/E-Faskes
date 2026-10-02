@@ -9,8 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('poliklinik', function (Blueprint $table) {
-            $table->id();
-            $table->string('kode_poli')->unique();
+            $table->string('kode_poli')->primary();
             $table->string('nama_poli');
             $table->timestamps();
         });

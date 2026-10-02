@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Data Tenaga Medis')
+@section('title', 'Data Pegawai')
 
 @section('content')
 <div class="flex justify-between items-center mb-4">
     <div class="flex items-center gap-3">
-        <h1 class="text-2xl font-bold text-slate-900">Data Tenaga Medis</h1>
+        <h1 class="text-2xl font-bold text-slate-900">Data Pegawai</h1>
         <span class="bg-brand-100 text-brand-700 py-1 px-3 rounded-full text-xs font-bold border border-brand-200">
-            {{ $tenaga_medis->count() }} Total
+            {{ $pegawais->count() }} Total
         </span>
     </div>
 </div>
@@ -30,33 +30,29 @@
                 <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
                         <th scope="col" class="border border-slate-300 px-4 py-3 text-center w-12">Pilih</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Kode</th>
+                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">NIP</th>
                         <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Nama Lengkap</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Profesi</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Spesialisasi</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">No. SIP</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Poliklinik</th>
-                        <th scope="col" class="border border-slate-300 px-4 py-3 text-center font-bold text-slate-700 uppercase">Status</th>
+                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Departemen</th>
+                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Jabatan</th>
+                        <th scope="col" class="border border-slate-300 px-4 py-3 text-left font-bold text-slate-700 uppercase">Status Karyawan</th>
+                        <th scope="col" class="border border-slate-300 px-4 py-3 text-center font-bold text-slate-700 uppercase">Status Aktif</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
-                    @forelse($tenaga_medis as $tm)
-                    <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $tm->id }}').click()">
+                    @forelse($pegawais as $p)
+                    <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $p->nip }}').click()">
                         <td class="border border-slate-300 px-4 py-3 text-center">
-                            <input type="radio" name="selected_tm" id="radio_{{ $tm->id }}" value="{{ $tm->id }}" 
+                            <input type="radio" name="selected_p" id="radio_{{ $p->nip }}" value="{{ $p->nip }}" 
                                    class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                   onclick="enableButtons({{ $tm->id }}, '{{ $tm->nama_lengkap }}'); event.stopPropagation();">
+                                   onclick="enableButtons('{{ $p->nip }}', '{{ $p->nama_lengkap }}'); event.stopPropagation();">
                         </td>
-                        <td class="border border-slate-300 px-4 py-3 font-medium text-slate-900">{{ $tm->kode_tenaga_medis }}</td>
-                        <td class="border border-slate-300 px-4 py-3 font-semibold text-brand-700">{{ $tm->nama_lengkap }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-slate-700">{{ $tm->profesi }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-slate-600">{{ $tm->spesialisasi ?? '-' }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-slate-600">{{ $tm->no_sip ?? '-' }}</td>
-                        <td class="border border-slate-300 px-4 py-3 text-slate-600">
-                            {{ $tm->poliklinik ? $tm->poliklinik->nama_poli : '-' }}
-                        </td>
+                        <td class="border border-slate-300 px-4 py-3 font-medium text-slate-900">{{ $p->nip }}</td>
+                        <td class="border border-slate-300 px-4 py-3 font-semibold text-brand-700">{{ $p->nama_lengkap }}</td>
+                        <td class="border border-slate-300 px-4 py-3 text-slate-700">{{ $p->departemen }}</td>
+                        <td class="border border-slate-300 px-4 py-3 text-slate-700">{{ $p->jabatan }}</td>
+                        <td class="border border-slate-300 px-4 py-3 text-slate-600">{{ $p->status_karyawan }}</td>
                         <td class="border border-slate-300 px-4 py-3 text-center">
-                            @if($tm->status_aktif)
+                            @if($p->status_aktif)
                                 <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-green-200">Aktif</span>
                             @else
                                 <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-red-200">Nonaktif</span>
@@ -65,9 +61,9 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="px-4 py-8 text-center text-slate-500 border border-slate-300">
-                            <i class="fa-solid fa-user-doctor text-4xl mb-3 text-slate-300 block"></i>
-                            Belum ada data tenaga medis.
+                        <td colspan="7" class="px-4 py-8 text-center text-slate-500 border border-slate-300">
+                            <i class="fa-solid fa-user-tie text-4xl mb-3 text-slate-300 block"></i>
+                            Belum ada data pegawai.
                         </td>
                     </tr>
                     @endforelse
@@ -85,7 +81,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fa-solid fa-search text-slate-400 text-sm"></i>
                     </div>
-                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nakes..." class="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 w-full transition-all bg-slate-50">
+                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari pegawai..." class="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 w-full transition-all bg-slate-50">
                 </div>
                 
                 <div class="text-xs text-slate-500 hidden lg:flex items-center">
@@ -95,7 +91,7 @@
             </div>
             
             <div class="flex items-center gap-2 overflow-x-auto shrink-0 pb-1 md:pb-0">
-                <a href="{{ route('tenaga-medis.create') }}" class="whitespace-nowrap bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
+                <a href="{{ route('pegawai.create') }}" class="whitespace-nowrap bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
                     <i class="fa-solid fa-plus mr-1.5"></i> Tambah
                 </a>
                 
@@ -150,16 +146,16 @@
 
     function doEdit() {
         if (selectedId) {
-            window.location.href = `/tenaga-medis/${selectedId}/edit`;
+            window.location.href = `/pegawai/${selectedId}/edit`;
         }
     }
 
     function doDelete() {
-        if (selectedId && confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+        if (selectedId && confirm('Apakah Anda yakin ingin menghapus data pegawai ini?')) {
             const form = document.getElementById('actionForm');
             const methodInput = document.getElementById('formMethod');
             
-            form.action = `/tenaga-medis/${selectedId}`;
+            form.action = `/pegawai/${selectedId}`;
             methodInput.value = 'DELETE';
             form.submit();
         }

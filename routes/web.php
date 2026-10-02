@@ -26,6 +26,10 @@ Route::delete('/pasien/{id}', [PasienController::class, 'destroy'])->name('pasie
 use App\Http\Controllers\PoliklinikController;
 Route::resource('poliklinik', PoliklinikController::class);
 
-// Tenaga Medis
-use App\Http\Controllers\TenagaMedisController;
-Route::resource('tenaga-medis', TenagaMedisController::class);
+// Data Pegawai (HR)
+use App\Http\Controllers\PegawaiController;
+Route::resource('pegawai', PegawaiController::class);
+
+// Master Dokter
+use App\Http\Controllers\DokterController;
+Route::resource('dokter', DokterController::class);

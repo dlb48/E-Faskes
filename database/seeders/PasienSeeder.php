@@ -13,7 +13,7 @@ class PasienSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $jenis_pasien = $faker->randomElement(['Umum', 'BPJS']);
             
             $next_id = Pasien::count() + 1;

@@ -9,9 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pasien', function (Blueprint $table) {
-            $table->id();
+            $table->string('nik', 16)->primary();
             $table->string('no_rm')->unique();
-            $table->string('nik')->unique();
             $table->string('no_kartu_bpjs')->unique()->nullable();
             $table->string('nama');
             $table->date('tanggal_lahir');

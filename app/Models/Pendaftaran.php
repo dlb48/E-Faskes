@@ -14,11 +14,11 @@ class Pendaftaran extends Model
 
     public function pasien()
     {
-        return $this->belongsTo(Pasien::class);
+        return $this->belongsTo(Pasien::class, 'nik_pasien', 'nik');
     }
 
     public function poliklinik()
     {
-        return $this->belongsTo(Poliklinik::class);
+        return $this->belongsTo(Poliklinik::class, 'kode_poli', 'kode_poli');
     }
 }

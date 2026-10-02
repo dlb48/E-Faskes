@@ -43,7 +43,7 @@ class PoliklinikController extends Controller
     public function update(Request $request, Poliklinik $poliklinik)
     {
         $request->validate([
-            'kode_poli' => 'required|unique:poliklinik,kode_poli,' . $poliklinik->id,
+            'kode_poli' => 'required|unique:poliklinik,kode_poli,' . $poliklinik->kode_poli . ',kode_poli',
             'nama_poli' => 'required',
         ]);
 

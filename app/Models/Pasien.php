@@ -10,7 +10,11 @@ class Pasien extends Model
     use HasFactory;
 
     protected $table = 'pasien';
-    protected $guarded = ['id'];
+    protected $primaryKey = 'nik';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $guarded = [];
 
     public function pendaftaran()
     {

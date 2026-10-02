@@ -9,7 +9,7 @@ class PasienController extends Controller
 {
     public function index()
     {
-        $pasiens = Pasien::orderBy('id', 'desc')->get();
+        $pasiens = Pasien::latest()->get();
         return view('pasien.index', compact('pasiens'));
     }
 
@@ -86,20 +86,20 @@ class PasienController extends Controller
         return redirect()->route('pasien.index')->with('success', 'Data Pasien Baru berhasil disimpan dengan No. RM: ' . $no_rm);
     }
 
-    public function edit($id)
+    public function edit($nik)
     {
-        $pasien = Pasien::findOrFail($id);
+        $pasien = Pasien::findOrFail($nik);
         return view('pasien.edit', compact('pasien'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $nik)
     {
-        $pasien = Pasien::findOrFail($id);
+        $pasien = Pasien::findOrFail($nik);
         
         $request->validate([
             'jenis_pasien' => 'required|in:Umum,BPJS',
-            'nik' => 'required|string|max:16|unique:pasien,nik,'.$pasien->id,
-            'no_kartu_bpjs' => 'nullable|string|max:13|unique:pasien,no_kartu_bpjs,'.$pasien->id,
+            'nik' => 'required|string|max:16|unique:pasien,nik,'.$pasien->nik.',nik',
+            'no_kartu_bpjs' => 'nullable|string|max:13|unique:pasien,no_kartu_bpjs,'.$pasien->nik.',nik',
             'nama' => 'required|string|max:255',
             'tempat_lahir' => 'nullable|string|max:255',
             'tanggal_lahir' => 'required|date',
@@ -131,9 +131,9 @@ class PasienController extends Controller
         return redirect()->route('pasien.index')->with('success', 'Data Pasien berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy($nik)
     {
-        $pasien = Pasien::findOrFail($id);
+        $pasien = Pasien::findOrFail($nik);
         $pasien->delete();
 
         return redirect()->route('pasien.index')->with('success', 'Data Pasien berhasil dihapus.');

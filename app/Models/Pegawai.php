@@ -5,19 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Poliklinik extends Model
+class Pegawai extends Model
 {
     use HasFactory;
 
-    protected $table = 'poliklinik';
-    protected $primaryKey = 'kode_poli';
+    protected $table = 'pegawai';
+    protected $primaryKey = 'nip';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $guarded = [];
-
-    public function pendaftaran()
-    {
-        return $this->hasMany(Pendaftaran::class);
-    }
 }

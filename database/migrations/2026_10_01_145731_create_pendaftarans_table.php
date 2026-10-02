@@ -10,8 +10,10 @@ return new class extends Migration
     {
         Schema::create('pendaftaran', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pasien_id')->constrained('pasien')->onDelete('cascade');
-            $table->foreignId('poliklinik_id')->constrained('poliklinik')->onDelete('cascade');
+            $table->string('nik_pasien', 16);
+            $table->foreign('nik_pasien')->references('nik')->on('pasien')->onDelete('cascade');
+            $table->string('kode_poli');
+            $table->foreign('kode_poli')->references('kode_poli')->on('poliklinik')->onDelete('cascade');
             $table->string('no_antrean');
             $table->enum('jenis_pasien', ['Umum', 'BPJS']);
             $table->enum('sumber_daftar', ['On-Site', 'Mobile JKN']);

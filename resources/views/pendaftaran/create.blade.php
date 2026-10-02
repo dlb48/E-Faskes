@@ -38,7 +38,7 @@
                 @forelse($pasiens as $pasien)
                 <label class="flex items-start p-4 border-b border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors last:border-0">
                     <div class="flex-shrink-0 mt-0.5">
-                        <input type="radio" name="pasien_id" value="{{ $pasien->id }}" class="w-4 h-4 text-brand-600 focus:ring-brand-500" required {{ count($pasiens) == 1 ? 'checked' : '' }}>
+                        <input type="radio" name="nik_pasien" value="{{ $pasien->nik }}" class="w-4 h-4 text-brand-600 focus:ring-brand-500" required {{ count($pasiens) == 1 ? 'checked' : '' }}>
                     </div>
                     <div class="ml-3 flex-1">
                         <div class="flex items-center justify-between">
@@ -74,7 +74,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
                         @foreach($polikliniks as $poli)
                         <label class="relative flex items-center justify-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
-                            <input type="radio" name="poliklinik_id" value="{{ $poli->id }}" class="absolute h-0 w-0 opacity-0 peer" required>
+                            <input type="radio" name="kode_poli" value="{{ $poli->kode_poli }}" class="absolute h-0 w-0 opacity-0 peer" required>
                             <div class="peer-checked:border-brand-500 peer-checked:bg-brand-50 peer-checked:ring-1 peer-checked:ring-brand-500 absolute inset-0 rounded-xl transition-all"></div>
                             <div class="relative z-10 text-center">
                                 <div class="text-brand-600 mb-1"><i class="fa-solid fa-stethoscope text-xl"></i></div>
