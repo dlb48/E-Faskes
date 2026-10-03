@@ -24,18 +24,16 @@
                 <table class="min-w-full border-collapse border border-slate-300 text-sm">
                     <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                         <tr>
-                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">NIK</th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 bg-white">
                         @foreach($data['pasien'] as $d)
-                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_pasien_{{ $d->nik }}').click()">
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_pasien_{{ $d->nik }}').click()">
                             <td class="border border-slate-300 px-3 py-2 text-center">
-                                <input type="radio" name="selected_d" id="radio_pasien_{{ $d->nik }}" value="{{ $d->nik }}" 
-                                       class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                       onclick="enableButtons('pasien', '{{ $d->nik }}', '{{ addslashes($d->nama_pasien) }}'); event.stopPropagation();">
+                                <input type="checkbox" name="selected_items[]" id="check_pasien_{{ $d->nik }}" value="pasien|{{ $d->nik }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
                             </td>
                             <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->nik }}</td>
                             <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->nama_pasien }}</td>
@@ -55,18 +53,16 @@
                 <table class="min-w-full border-collapse border border-slate-300 text-sm">
                     <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                         <tr>
-                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">NIP</th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Lengkap</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 bg-white">
                         @foreach($data['pegawai'] as $d)
-                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_pegawai_{{ $d->nip }}').click()">
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_pegawai_{{ $d->nip }}').click()">
                             <td class="border border-slate-300 px-3 py-2 text-center">
-                                <input type="radio" name="selected_d" id="radio_pegawai_{{ $d->nip }}" value="{{ $d->nip }}" 
-                                       class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                       onclick="enableButtons('pegawai', '{{ $d->nip }}', '{{ addslashes($d->nama_lengkap) }}'); event.stopPropagation();">
+                                <input type="checkbox" name="selected_items[]" id="check_pegawai_{{ $d->nip }}" value="pegawai|{{ $d->nip }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
                             </td>
                             <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->nip }}</td>
                             <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->nama_lengkap }}</td>
@@ -86,7 +82,7 @@
                 <table class="min-w-full border-collapse border border-slate-300 text-sm">
                     <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                         <tr>
-                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">ID Dokter</th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama</th>
                         </tr>
@@ -94,11 +90,9 @@
                     <tbody class="divide-y divide-slate-200 bg-white">
                         @foreach($data['dokter'] as $d)
                         @php $name = $d->pegawai ? $d->pegawai->nama_lengkap : $d->nip; @endphp
-                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_dokter_{{ $d->id_dokter }}').click()">
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_dokter_{{ $d->id_dokter }}').click()">
                             <td class="border border-slate-300 px-3 py-2 text-center">
-                                <input type="radio" name="selected_d" id="radio_dokter_{{ $d->id_dokter }}" value="{{ $d->id_dokter }}" 
-                                       class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                       onclick="enableButtons('dokter', '{{ $d->id_dokter }}', '{{ addslashes($name) }}'); event.stopPropagation();">
+                                <input type="checkbox" name="selected_items[]" id="check_dokter_{{ $d->id_dokter }}" value="dokter|{{ $d->id_dokter }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
                             </td>
                             <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->id_dokter }}</td>
                             <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $name }}</td>
@@ -118,7 +112,7 @@
                 <table class="min-w-full border-collapse border border-slate-300 text-sm">
                     <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                         <tr>
-                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">ID Perawat</th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama</th>
                         </tr>
@@ -126,14 +120,70 @@
                     <tbody class="divide-y divide-slate-200 bg-white">
                         @foreach($data['perawat'] as $d)
                         @php $name = $d->pegawai ? $d->pegawai->nama_lengkap : $d->nip; @endphp
-                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_perawat_{{ $d->id_perawat }}').click()">
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_perawat_{{ $d->id_perawat }}').click()">
                             <td class="border border-slate-300 px-3 py-2 text-center">
-                                <input type="radio" name="selected_d" id="radio_perawat_{{ $d->id_perawat }}" value="{{ $d->id_perawat }}" 
-                                       class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                       onclick="enableButtons('perawat', '{{ $d->id_perawat }}', '{{ addslashes($name) }}'); event.stopPropagation();">
+                                <input type="checkbox" name="selected_items[]" id="check_perawat_{{ $d->id_perawat }}" value="perawat|{{ $d->id_perawat }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
                             </td>
                             <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->id_perawat }}</td>
                             <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $name }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
+        <!-- Data Jabatan -->
+        @if($data['jabatan']->count() > 0)
+        <div class="mb-8">
+            <h2 class="text-lg font-bold text-slate-800 mb-3"><i class="fa-solid fa-id-badge mr-2 text-slate-400"></i> Jabatan ({{ $data['jabatan']->count() }})</h2>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
+                        <tr>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">ID Jabatan</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Jabatan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        @foreach($data['jabatan'] as $d)
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_jabatan_{{ $d->id_jabatan }}').click()">
+                            <td class="border border-slate-300 px-3 py-2 text-center">
+                                <input type="checkbox" name="selected_items[]" id="check_jabatan_{{ $d->id_jabatan }}" value="jabatan|{{ $d->id_jabatan }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
+                            </td>
+                            <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->id_jabatan }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->nama_jabatan }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
+        <!-- Data Departemen -->
+        @if($data['departemen']->count() > 0)
+        <div class="mb-8">
+            <h2 class="text-lg font-bold text-slate-800 mb-3"><i class="fa-solid fa-building-user mr-2 text-slate-400"></i> Departemen ({{ $data['departemen']->count() }})</h2>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
+                        <tr>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">ID Departemen</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Departemen</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        @foreach($data['departemen'] as $d)
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_departemen_{{ $d->id_departemen }}').click()">
+                            <td class="border border-slate-300 px-3 py-2 text-center">
+                                <input type="checkbox" name="selected_items[]" id="check_departemen_{{ $d->id_departemen }}" value="departemen|{{ $d->id_departemen }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
+                            </td>
+                            <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->id_departemen }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->nama_departemen }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -150,18 +200,16 @@
                 <table class="min-w-full border-collapse border border-slate-300 text-sm">
                     <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                         <tr>
-                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Kode Poli</th>
                             <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Poli</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 bg-white">
                         @foreach($data['poliklinik'] as $d)
-                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_poliklinik_{{ $d->kode_poli }}').click()">
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_poliklinik_{{ $d->kode_poli }}').click()">
                             <td class="border border-slate-300 px-3 py-2 text-center">
-                                <input type="radio" name="selected_d" id="radio_poliklinik_{{ $d->kode_poli }}" value="{{ $d->kode_poli }}" 
-                                       class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                       onclick="enableButtons('poliklinik', '{{ $d->kode_poli }}', '{{ addslashes($d->nama_poli) }}'); event.stopPropagation();">
+                                <input type="checkbox" name="selected_items[]" id="check_poliklinik_{{ $d->kode_poli }}" value="poliklinik|{{ $d->kode_poli }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
                             </td>
                             <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->kode_poli }}</td>
                             <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->nama_poli }}</td>
@@ -196,7 +244,7 @@
         </div>
     </form>
 
-    @if($data['pasien']->count() == 0 && $data['pegawai']->count() == 0 && $data['dokter']->count() == 0 && $data['perawat']->count() == 0 && $data['poliklinik']->count() == 0)
+    @if($data['pasien']->count() == 0 && $data['pegawai']->count() == 0 && $data['dokter']->count() == 0 && $data['perawat']->count() == 0 && $data['poliklinik']->count() == 0 && $data['departemen']->count() == 0 && $data['jabatan']->count() == 0)
     <div class="text-center py-20 bg-white rounded-xl shadow-sm border border-slate-200">
         <i class="fa-solid fa-trash-can-arrow-up text-5xl text-slate-300 mb-4 block"></i>
         <h3 class="text-xl font-bold text-slate-700">Tempat Sampah Kosong</h3>
@@ -206,43 +254,54 @@
 </div>
 
 <script>
-    let selectedType = null;
-    let selectedId = null;
+    function toggleAll(source) {
+        const table = source.closest('table');
+        const checkboxes = table.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(cb => {
+            cb.checked = source.checked;
+        });
+        updateSelection();
+    }
 
-    function enableButtons(type, id, name) {
-        selectedType = type;
-        selectedId = id;
+    function updateSelection() {
+        const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+        const selectedCount = checkboxes.length;
         
-        document.getElementById('btnPulihkan').disabled = false;
-        document.getElementById('btnHapus').disabled = false;
-        
-        document.getElementById('selectionText').innerHTML = `Terpilih: <strong class="capitalize">${type}</strong> - <strong>${name}</strong>`;
-        
-        // Hapus highlight dari semua baris
         document.querySelectorAll('tr').forEach(tr => tr.classList.remove('bg-blue-50'));
-        
-        // Highlight baris yang dipilih
-        const selectedRadio = document.getElementById('radio_' + type + '_' + id);
-        if (selectedRadio) {
-            selectedRadio.closest('tr').classList.add('bg-blue-50');
+        checkboxes.forEach(cb => cb.closest('tr').classList.add('bg-blue-50'));
+
+        const btnPulihkan = document.getElementById('btnPulihkan');
+        const btnHapus = document.getElementById('btnHapus');
+        const selectionText = document.getElementById('selectionText');
+
+        if (selectedCount === 0) {
+            btnPulihkan.disabled = true;
+            btnHapus.disabled = true;
+            selectionText.innerHTML = 'Pilih satu atau lebih data untuk dipulihkan atau dihapus permanen.';
+        } else {
+            btnPulihkan.disabled = false;
+            btnHapus.disabled = false;
+            selectionText.innerHTML = `<strong>${selectedCount}</strong> data terpilih.`;
         }
     }
 
     function doRestore() {
-        if (!selectedId || !selectedType) return;
+        const selectedCount = document.querySelectorAll('.row-checkbox:checked').length;
+        if (selectedCount === 0) return;
         
         const form = document.getElementById('actionForm');
-        form.action = `/sampah/${selectedType}/${selectedId}/restore`;
+        form.action = `{{ route('sampah.restoreBulk') }}`;
         document.getElementById('formMethod').value = 'POST';
         form.submit();
     }
 
     function doForceDelete() {
-        if (!selectedId || !selectedType) return;
+        const selectedCount = document.querySelectorAll('.row-checkbox:checked').length;
+        if (selectedCount === 0) return;
         
         Swal.fire({
             title: 'Hapus Permanen?',
-            text: 'Data yang dihapus permanen tidak dapat dikembalikan! Sistem akan membatalkan penghapusan otomatis jika data masih terhubung dengan tabel lain.',
+            text: `Apakah Anda yakin ingin menghapus permanen ${selectedCount} data? Data ini tidak dapat dikembalikan!`,
             icon: 'error',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
@@ -252,7 +311,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const form = document.getElementById('actionForm');
-                form.action = `/sampah/${selectedType}/${selectedId}`;
+                form.action = `{{ route('sampah.forceDeleteBulk') }}`;
                 document.getElementById('formMethod').value = 'DELETE';
                 form.submit();
             }
@@ -260,4 +319,7 @@
     }
 </script>
 @endsection
+
+
+
 

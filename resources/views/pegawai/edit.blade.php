@@ -82,21 +82,25 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Departemen / Divisi <span class="text-red-500">*</span></label>
-                        <select name="departemen" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 bg-white">
+                        <select name="id_departemen" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 bg-white">
                             <option value="">-- Pilih Departemen --</option>
-                            @php $dept = old('departemen', $pegawai->departemen); @endphp
-                            <option value="Pelayanan Medis" {{ $dept == 'Pelayanan Medis' ? 'selected' : '' }}>Pelayanan Medis</option>
-                            <option value="Keperawatan" {{ $dept == 'Keperawatan' ? 'selected' : '' }}>Keperawatan</option>
-                            <option value="Farmasi & Laboratorium" {{ $dept == 'Farmasi & Laboratorium' ? 'selected' : '' }}>Farmasi & Laboratorium</option>
-                            <option value="Administrasi & Keuangan" {{ $dept == 'Administrasi & Keuangan' ? 'selected' : '' }}>Administrasi & Keuangan</option>
-                            <option value="SDM & Umum" {{ $dept == 'SDM & Umum' ? 'selected' : '' }}>SDM & Umum</option>
-                            <option value="IT & Sistem Informasi" {{ $dept == 'IT & Sistem Informasi' ? 'selected' : '' }}>IT & Sistem Informasi</option>
+                            @php $selectedDept = old('id_departemen', $pegawai->id_departemen); @endphp
+                            @foreach($departemens as $dept)
+                                <option value="{{ $dept->id_departemen }}" {{ $selectedDept == $dept->id_departemen ? 'selected' : '' }}>
+                                    {{ $dept->nama_departemen }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Jabatan <span class="text-red-500">*</span></label>
-                        <input type="text" name="jabatan" value="{{ old('jabatan', $pegawai->jabatan) }}" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
+                        <select name="id_jabatan" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 bg-white">
+                            <option value="">-- Pilih Jabatan --</option>
+                            @foreach($jabatans as $j)
+                                <option value="{{ $j->id_jabatan }}" {{ old('id_jabatan', $pegawai->id_jabatan) == $j->id_jabatan ? 'selected' : '' }}>{{ $j->nama_jabatan }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div>
@@ -147,4 +151,5 @@
     </div>
 </div>
 @endsection
+
 

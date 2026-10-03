@@ -18,8 +18,7 @@ class PerawatController extends Controller
     public function create()
     {
         $existingPerawatNips = Perawat::pluck('nip')->toArray();
-        $pegawais = Pegawai::where('status_aktif', true)
-            ->where('departemen', 'Pelayanan Medis')
+        $pegawais = Pegawai::with('jabatanData')->where('status_aktif', true)
             ->whereNotIn('nip', $existingPerawatNips)
             ->get();
             
@@ -30,6 +29,17 @@ class PerawatController extends Controller
 
     public function store(Request $request)
     {
+        // Auto-generate ID if empty (checkbox was checked)
+        if (empty($request->id_perawat)) {
+            $last = Perawat::orderBy('id_perawat', 'desc')->first();
+            if ($last && preg_match('/^PRW-(\d+)$/', $last->id_perawat, $matches)) {
+                $nextId = (int)$matches[1] + 1;
+                $request->merge(['id_perawat' => 'PRW-' . str_pad($nextId, 3, '0', STR_PAD_LEFT)]);
+            } else {
+                $request->merge(['id_perawat' => 'PRW-001']);
+            }
+        }
+
         $request->validate([
             'id_perawat' => 'required|unique:perawats,id_perawat|unique:dokters,id_dokter',
             'nip' => 'required|unique:perawats,nip|unique:dokters,nip|exists:pegawai,nip',

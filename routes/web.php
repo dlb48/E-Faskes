@@ -41,5 +41,24 @@ Route::resource('perawat', PerawatController::class);
 // Tempat Sampah
 use App\Http\Controllers\SampahController;
 Route::get('/sampah', [SampahController::class, 'index'])->name('sampah.index');
+Route::post('/sampah/bulk/restore', [SampahController::class, 'restoreBulk'])->name('sampah.restoreBulk');
+Route::delete('/sampah/bulk/force', [SampahController::class, 'forceDeleteBulk'])->name('sampah.forceDeleteBulk');
 Route::post('/sampah/{type}/{id}/restore', [SampahController::class, 'restore'])->name('sampah.restore');
 Route::delete('/sampah/{type}/{id}', [SampahController::class, 'forceDelete'])->name('sampah.forceDelete');
+
+// Departemen
+use App\Http\Controllers\DepartemenController;
+Route::delete('departemen/bulk', [DepartemenController::class, 'destroyBulk'])->name('departemen.destroyBulk');
+Route::resource('departemen', DepartemenController::class)->parameters([
+    'departemen' => 'departemen'
+]);
+
+// Jabatan
+use App\Http\Controllers\JabatanController;
+Route::delete('jabatan/bulk', [JabatanController::class, 'destroyBulk'])->name('jabatan.destroyBulk');
+Route::resource('jabatan', JabatanController::class)->parameters([
+    'jabatan' => 'jabatan'
+]);
+
+
+

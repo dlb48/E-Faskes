@@ -77,7 +77,13 @@
                 <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-id-card-clip text-indigo-500 mr-2"></i> Kepegawaian</h2>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-indigo-400 hover:shadow-sm transition-all group bg-white">
+                <a href="{{ route('jabatan.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-indigo-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-indigo-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-id-badge text-slate-400 group-hover:text-indigo-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-indigo-700 text-sm">Jabatan</span>
+                </a>
+                <a href="{{ route('departemen.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-indigo-400 hover:shadow-sm transition-all group bg-white">
                     <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-indigo-50 transition-colors shrink-0">
                         <i class="fa-solid fa-building-user text-slate-400 group-hover:text-indigo-600 text-lg transition-colors"></i>
                     </div>
@@ -169,12 +175,30 @@
         // Tampilkan grup yang dipilih
         if (groupId) {
             document.getElementById(groupId).classList.remove('hidden');
+            // Simpan pilihan terakhir ke memori peramban (localStorage)
+            localStorage.setItem('last_active_group', groupId);
+        } else {
+            // Hapus ingatan jika pilih "Pilih Kelompok Menu..."
+            localStorage.removeItem('last_active_group');
         }
     }
     
-    // Inisialisasi status awal (kosong)
+    // Inisialisasi status awal saat halaman dimuat
     document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('groupSelect').value = '';
+        // Cek apakah ada ingatan kelompok terakhir yang dibuka
+        const savedGroup = localStorage.getItem('last_active_group');
+        const groupSelect = document.getElementById('groupSelect');
+        
+        if (savedGroup && document.getElementById(savedGroup)) {
+            // Jika ada, otomatis pilih dan tampilkan
+            groupSelect.value = savedGroup;
+            showGroup(savedGroup);
+        } else {
+            // Jika tidak ada, kosongkan
+            groupSelect.value = '';
+        }
     });
 </script>
 @endsection
+
+

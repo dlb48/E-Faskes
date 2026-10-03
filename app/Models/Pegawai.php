@@ -16,4 +16,15 @@ class Pegawai extends Model
     protected $keyType = 'string';
 
     protected $guarded = [];
+
+    public function departemen()
+    {
+        return $this->belongsTo(Departemen::class, 'id_departemen', 'id_departemen');
+    }
+
+    public function jabatanData()
+    {
+        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id_jabatan');
+    }
 }
+

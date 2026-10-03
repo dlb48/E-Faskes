@@ -28,8 +28,8 @@
     <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-start">
         <i class="fa-solid fa-circle-info text-blue-500 text-xl mr-3 mt-0.5"></i>
         <p class="text-sm text-blue-800">
-            <strong>Informasi:</strong> Data perawat harus merujuk pada <strong>Data Pegawai</strong> yang sudah diinput sebelumnya. Hanya pegawai berstatus Aktif dengan departemen "Pelayanan Medis" yang akan muncul di pilihan bawah ini. 
-            <a href="{{ route('pegawai.create') }}" class="font-bold underline hover:text-blue-900 transition-colors ml-1">Tambahkan data pegawai sekarang &rarr;</a>
+            <strong>Informasi:</strong> Data perawat harus merujuk pada <strong>Data Pegawai</strong> yang sudah diinput sebelumnya, jika belum ada silahkan
+            <a href="{{ route('pegawai.create') }}" class="font-bold underline hover:text-blue-900 transition-colors ml-1">Tambahkan data pegawai terlebih dahulu</a>
         </p>
     </div>
 
@@ -43,8 +43,14 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Kode perawat (ID) <span class="text-red-500">*</span></label>
-                    <input type="text" name="id_perawat" value="{{ old('id_perawat') }}" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500" placeholder="Contoh: D-001">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1 flex items-center justify-between">
+                        <span>Kode Perawat (ID) <span class="text-red-500">*</span></span>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="autoIdCheckbox" class="w-3.5 h-3.5 text-brand-600 border-slate-300 rounded focus:ring-brand-500" checked onchange="toggleAutoId()">
+                            <span class="ml-1.5 text-xs font-medium text-slate-500">Auto (PRW-00X)</span>
+                        </label>
+                    </label>
+                    <input type="text" id="inputId" name="id_perawat" value="{{ old('id_perawat') }}" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 bg-slate-50 text-slate-500" placeholder="Otomatis dibuat sistem" readonly>
                 </div>
 
                 <div>
@@ -87,6 +93,66 @@
 
             </div>
         </form>
+    
+<script>
+    function toggleAutoId() {
+        const checkbox = document.getElementById('autoIdCheckbox');
+        const input = document.getElementById('inputId');
+        
+        if (checkbox.checked) {
+            input.readOnly = true;
+            input.value = '';
+            input.classList.add('bg-slate-50', 'text-slate-500');
+            input.placeholder = 'Otomatis dibuat sistem';
+            input.required = false;
+        } else {
+            input.readOnly = false;
+            input.classList.remove('bg-slate-50', 'text-slate-500');
+            input.placeholder = 'Ketik Manual (Contoh: PRW-001)';
+            input.required = true;
+            input.focus();
+        }
+    }
+    
+    // Set initial state
+    document.addEventListener('DOMContentLoaded', () => {
+        const hasOldValue = "{{ old('id_perawat') }}" !== "";
+        if (hasOldValue) {
+            document.getElementById('autoIdCheckbox').checked = false;
+            toggleAutoId();
+        }
+    });
+</script>
+    
+<script>
+    function toggleAutoId() {
+        const checkbox = document.getElementById('autoIdCheckbox');
+        const input = document.getElementById('inputId');
+        
+        if (checkbox.checked) {
+            input.readOnly = true;
+            input.value = '';
+            input.classList.add('bg-slate-50', 'text-slate-500');
+            input.placeholder = 'Otomatis dibuat sistem';
+            input.required = false;
+        } else {
+            input.readOnly = false;
+            input.classList.remove('bg-slate-50', 'text-slate-500');
+            input.placeholder = 'Ketik Manual (Contoh: PRW-001)';
+            input.required = true;
+            input.focus();
+        }
+    }
+    
+    // Set initial state
+    document.addEventListener('DOMContentLoaded', () => {
+        const hasOldValue = "{{ old('id_perawat') }}" !== "";
+        if (hasOldValue) {
+            document.getElementById('autoIdCheckbox').checked = false;
+            toggleAutoId();
+        }
+    });
+</script>
     </div>
 
     <!-- Fixed action buttons -->
@@ -100,3 +166,7 @@
     </div>
 </div>
 @endsection
+
+
+
+

@@ -3,19 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
+use App\Models\Departemen;
+use App\Models\Jabatan;
 use Illuminate\Http\Request;
 
 class PegawaiController extends Controller
 {
     public function index()
     {
-        $pegawais = Pegawai::latest()->get();
+        $pegawais = Pegawai::with(['departemen', 'jabatanData'])->latest()->get();
         return view('pegawai.index', compact('pegawais'));
     }
 
     public function create()
     {
-        return view('pegawai.create');
+        $departemens = Departemen::all();
+        $jabatans = Jabatan::all();
+        return view('pegawai.create', compact('departemens', 'jabatans'));
     }
 
     public function store(Request $request)
@@ -24,8 +28,8 @@ class PegawaiController extends Controller
             'nip' => 'required|unique:pegawai,nip',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
-            'departemen' => 'required',
-            'jabatan' => 'required',
+            'id_departemen' => 'required|exists:departemens,id_departemen',
+            'id_jabatan' => 'nullable|exists:jabatans,id_jabatan',
             'status_karyawan' => 'required',
         ]);
 
@@ -37,8 +41,8 @@ class PegawaiController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'alamat' => $request->alamat,
             'no_telepon' => $request->no_telepon,
-            'departemen' => $request->departemen,
-            'jabatan' => $request->jabatan,
+            'id_departemen' => $request->id_departemen,
+            'id_jabatan' => $request->id_jabatan,
             'status_karyawan' => $request->status_karyawan,
             'tanggal_bergabung' => $request->tanggal_bergabung,
             'status_aktif' => $request->status_aktif == 1,
@@ -49,7 +53,9 @@ class PegawaiController extends Controller
 
     public function edit(Pegawai $pegawai)
     {
-        return view('pegawai.edit', compact('pegawai'));
+        $departemens = Departemen::all();
+        $jabatans = Jabatan::all();
+        return view('pegawai.edit', compact('pegawai', 'departemens', 'jabatans'));
     }
 
     public function update(Request $request, Pegawai $pegawai)
@@ -58,8 +64,8 @@ class PegawaiController extends Controller
             'nip' => 'required|unique:pegawai,nip,' . $pegawai->nip . ',nip',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
-            'departemen' => 'required',
-            'jabatan' => 'required',
+            'id_departemen' => 'required|exists:departemens,id_departemen',
+            'id_jabatan' => 'nullable|exists:jabatans,id_jabatan',
             'status_karyawan' => 'required',
         ]);
 
@@ -71,8 +77,8 @@ class PegawaiController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'alamat' => $request->alamat,
             'no_telepon' => $request->no_telepon,
-            'departemen' => $request->departemen,
-            'jabatan' => $request->jabatan,
+            'id_departemen' => $request->id_departemen,
+            'id_jabatan' => $request->id_jabatan,
             'status_karyawan' => $request->status_karyawan,
             'tanggal_bergabung' => $request->tanggal_bergabung,
             'status_aktif' => $request->status_aktif == 1,
@@ -87,3 +93,5 @@ class PegawaiController extends Controller
         return redirect()->route('pegawai.index')->with('success', 'Data Pegawai berhasil dihapus.');
     }
 }
+
+

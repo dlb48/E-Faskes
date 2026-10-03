@@ -20,8 +20,7 @@ class DokterController extends Controller
         // Hanya ambil pegawai yang statusnya aktif dan ada kata "Dokter" di jabatannya
         // atau departemennya Pelayanan Medis yang belum jadi dokter
         $existingDokterNips = Dokter::pluck('nip')->toArray();
-        $pegawais = Pegawai::where('status_aktif', true)
-            ->where('departemen', 'Pelayanan Medis')
+        $pegawais = Pegawai::with('jabatanData')->where('status_aktif', true)
             ->whereNotIn('nip', $existingDokterNips)
             ->get();
             
@@ -32,6 +31,17 @@ class DokterController extends Controller
 
     public function store(Request $request)
     {
+        // Auto-generate ID if empty (checkbox was checked)
+        if (empty($request->id_dokter)) {
+            $last = Dokter::orderBy('id_dokter', 'desc')->first();
+            if ($last && preg_match('/^DOK-(\d+)$/', $last->id_dokter, $matches)) {
+                $nextId = (int)$matches[1] + 1;
+                $request->merge(['id_dokter' => 'DOK-' . str_pad($nextId, 3, '0', STR_PAD_LEFT)]);
+            } else {
+                $request->merge(['id_dokter' => 'DOK-001']);
+            }
+        }
+
         $request->validate([
             'id_dokter' => 'required|unique:dokters,id_dokter|unique:perawats,id_perawat',
             'nip' => 'required|unique:dokters,nip|unique:perawats,nip|exists:pegawai,nip',
