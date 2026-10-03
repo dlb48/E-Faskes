@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+use App\Http\Controllers\Api\JknAntreanController;
+
+// Endpoint Bridging BPJS (Mobile JKN)
+Route::post('/jkn/antrean/ambil', [JknAntreanController::class, 'ambilAntrean']);
+Route::post('/jkn/antrean/batal', [JknAntreanController::class, 'batalAntrean']);
+

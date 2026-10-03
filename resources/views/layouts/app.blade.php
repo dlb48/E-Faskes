@@ -16,6 +16,27 @@
 
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container .select2-selection--single {
+            height: 42px !important;
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 0.5rem !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 40px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important;
+            color: #475569 !important;
+        }
+        .select2-search__field {
+            outline: none !important;
+        }
+    </style>
 </head>
 <body class="text-slate-800 bg-slate-50 font-sans">
 
@@ -107,5 +128,10 @@
             });
         @endif
     </script>
+    <!-- Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 </html>
+
+

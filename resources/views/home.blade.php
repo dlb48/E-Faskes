@@ -14,6 +14,7 @@
             <option value="group3">Kepegawaian</option>
             <option value="group4">Farmasi & Keuangan</option>
             <option value="group5">Pengaturan</option>
+            <option value="group6">Bridging BPJS</option>
         </select>
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
             <i class="fa-solid fa-chevron-down text-sm"></i>
@@ -56,6 +57,12 @@
                 <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-database text-emerald-500 mr-2"></i> Master Data</h2>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <a href="{{ route('jadwal.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-emerald-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-calendar-check text-slate-400 group-hover:text-emerald-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-emerald-700 text-sm">Jadwal Dokter</span>
+                </a>
                 <a href="{{ route('poliklinik.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all group bg-white">
                     <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-emerald-50 transition-colors shrink-0">
                         <i class="fa-solid fa-house-medical text-slate-400 group-hover:text-emerald-600 text-lg transition-colors"></i>
@@ -131,6 +138,37 @@
             </div>
         </div>
 
+        <!-- Kelompok 6: Bridging BPJS -->
+        <div id="group6" class="menu-group hidden fade-in">
+            <div class="mb-4 border-b border-slate-200 pb-2">
+                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-bridge text-blue-500 mr-2"></i> Bridging BPJS</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                
+                <a href="{{ route('mapping.dokter') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-blue-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-user-doctor text-slate-400 group-hover:text-blue-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-blue-700 text-sm">Mapping Dokter</span>
+                </a>
+
+                <a href="{{ route('mapping.poli') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-blue-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-house-medical text-slate-400 group-hover:text-blue-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-blue-700 text-sm">Mapping Poli</span>
+                </a>
+
+                <a href="{{ route('pengaturan.bpjs.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-blue-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-satellite-dish text-slate-400 group-hover:text-blue-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-blue-700 text-sm">Bridging JKN v2</span>
+                </a>
+
+            </div>
+        </div>
+
         <!-- Kelompok 5: Pengaturan -->
         <div id="group5" class="menu-group hidden fade-in">
             <div class="mb-4 border-b border-slate-200 pb-2">
@@ -149,7 +187,7 @@
                     </div>
                     <span class="font-semibold text-slate-700 group-hover:text-slate-900 text-sm">Aplikasi</span>
                 </a>
-            </div>
+</div>
         </div>
         
     </div>
@@ -200,5 +238,15 @@
     });
 </script>
 @endsection
+
+
+
+
+
+
+
+
+
+
 
 
