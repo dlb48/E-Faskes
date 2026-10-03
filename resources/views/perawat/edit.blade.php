@@ -44,12 +44,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Kode perawat (ID)</label>
-                    <input type="text" name="id_perawat" value="{{ $perawat->id_perawat }}" disabled class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-slate-100 text-slate-500 cursor-not-allowed">
+                    <input type="text" name="id_perawat" value="{{ $perawat->id_perawat }}" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
                 </div>
 
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Pegawai (perawat)</label>
-                    <select name="nip" disabled class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-slate-100 text-slate-500 cursor-not-allowed">
+                    <select name="nip" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
                         @foreach($pegawais as $pegawai)
                             <option value="{{ $pegawai->nip }}" selected>
                                 {{ $pegawai->nip }} - {{ $pegawai->nama_lengkap }} ({{ $pegawai->jabatan }})
@@ -96,4 +96,5 @@
     </div>
 </div>
 @endsection
+
 

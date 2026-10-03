@@ -28,15 +28,20 @@
                 <div>
                     <div class="mb-5">
                         <label class="block text-sm font-medium text-slate-700 mb-1">No. Rekam Medis (RM)</label>
-                        <input type="text" disabled value="{{ $pasien->no_rm }}" class="w-full px-4 py-2 border border-slate-300 rounded-lg bg-slate-100 text-slate-500 font-mono font-bold">
+                        <input type="text" name="no_rm" value="{{ old('no_rm', $pasien->no_rm) }}" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all bg-white @error('no_rm') border-red-500 @enderror">
+                        @error('no_rm') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="mb-5">
                         <label class="block text-sm font-medium text-slate-700 mb-1">Jenis Pasien (Penjamin Utama) *</label>
-                        <select name="jenis_pasien" id="select_jenis_pasien" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all bg-white" onchange="toggleBpjs()">
-                            <option value="Umum" {{ old('jenis_pasien', $pasien->jenis_pasien) == 'Umum' ? 'selected' : '' }}>Umum / Mandiri</option>
-                            <option value="BPJS" {{ old('jenis_pasien', $pasien->jenis_pasien) == 'BPJS' ? 'selected' : '' }}>BPJS Kesehatan</option>
+                        <select name="id_penjamin" id="select_jenis_pasien" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all bg-white" onchange="toggleBpjs()">
+                            <option value="">Pilih Data Penjamin</option>
+                            @foreach($penjamins as $p)
+                                <option value="{{ $p->id_penjamin }}" {{ old('id_penjamin', $pasien->id_penjamin) == $p->id_penjamin ? 'selected' : '' }}>{{ $p->id_penjamin }} - {{ $p->nama_penjamin }}</option>
+                            @endforeach
                         </select>
+                        <p class="text-xs text-slate-500 mt-1">Pilih penjamin untuk menentukan relasi BPJS atau Umum.</p>
+                        @error('id_penjamin') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
@@ -48,7 +53,7 @@
 
                 <!-- Kolom Kanan: Nomor BPJS -->
                 <div>
-                    <div id="container_bpjs" style="{{ old('jenis_pasien', $pasien->jenis_pasien) == 'BPJS' ? '' : 'display: none;' }}">
+                    <div id="container_bpjs" style="display: none;">
                         <label class="block text-sm font-medium text-slate-700 mb-1">Nomor Kartu BPJS *</label>
                         <input type="text" id="input_bpjs" name="no_kartu_bpjs" placeholder="13 digit nomor BPJS" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all @error('no_kartu_bpjs') border-red-500 @enderror" value="{{ old('no_kartu_bpjs', $pasien->no_kartu_bpjs) }}">
                         @error('no_kartu_bpjs') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
@@ -395,17 +400,20 @@
     }
 
     function toggleBpjs() {
-        const jenisPasien = document.getElementById('select_jenis_pasien').value;
+        const select = document.getElementById('select_jenis_pasien');
         const containerBpjs = document.getElementById('container_bpjs');
         const inputBpjs = document.getElementById('input_bpjs');
 
-        if (jenisPasien === 'BPJS') {
+        if (select.selectedIndex === -1) return;
+        
+        const selectedText = select.options[select.selectedIndex].text.toLowerCase();
+        
+        if (selectedText.includes('bpjs')) {
             containerBpjs.style.display = 'block';
             inputBpjs.required = true;
         } else {
             containerBpjs.style.display = 'none';
             inputBpjs.required = false;
-            // inputBpjs.value = ''; // Jangan dikosongkan otomatis pada saat edit
         }
     }
     

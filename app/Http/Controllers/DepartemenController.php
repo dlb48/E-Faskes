@@ -23,7 +23,7 @@ class DepartemenController extends Controller
         // Auto-generate ID if empty (checkbox was checked)
         if (empty($request->id_departemen)) {
             // Find the highest ID and increment
-            $lastDept = Departemen::orderBy('id_departemen', 'desc')->first();
+            $lastDept = Departemen::withTrashed()->orderBy('id_departemen', 'desc')->first();
             if ($lastDept && preg_match('/^DPT-(\d+)$/', $lastDept->id_departemen, $matches)) {
                 $nextId = (int)$matches[1] + 1;
                 $request->merge(['id_departemen' => 'DPT-' . str_pad($nextId, 3, '0', STR_PAD_LEFT)]);
@@ -76,4 +76,6 @@ class DepartemenController extends Controller
         return redirect()->route('departemen.index')->with('success', count($ids) . ' Data Departemen berhasil dihapus.');
     }
 }
+
+
 

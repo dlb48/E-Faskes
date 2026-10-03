@@ -43,18 +43,38 @@ class MappingBpjsController extends Controller
     public function searchBpjsPoli(Request $request)
     {
         $keyword = strtolower($request->query("keyword", ""));
-        
         if (strlen($keyword) < 3) {
             return response()->json(["success" => false, "message" => "Minimal 3 karakter"]);
         }
 
-        $results = collect($this->mockBpjsPoli)->filter(function ($item) use ($keyword) {
-            return str_contains(strtolower($item["kdpoli"]), $keyword) || 
-                   str_contains(strtolower($item["nmpoli"]), $keyword);
+        $bpjsService = new \App\Services\BpjsService();
+        $response = $bpjsService->getReferensiPoli();
+
+        // Cek response BPJS (biasanya data ada di response atau list)
+        if (isset($response["metadata"]) && !in_array($response["metadata"]["code"], [1, 200, "1", "200"])) {
+            return response()->json(["success" => false, "message" => $response["metadata"]["message"] ?? "Gagal mengambil data dari BPJS"]);
+        }
+
+        $dataPoli = $response["response"] ?? [];
+        
+        $results = collect($dataPoli)->filter(function ($item) use ($keyword) {
+            return str_contains(strtolower($item["kdpoli"] ?? ""), $keyword) || 
+                   str_contains(strtolower($item["nmpoli"] ?? ""), $keyword) ||
+                   str_contains(strtolower($item["kdsubspesialis"] ?? ""), $keyword) ||
+                   str_contains(strtolower($item["nmsubspesialis"] ?? ""), $keyword);
         })->values();
 
-        return response()->json(["success" => true, "data" => $results]);
+        // Normalisasi response agar frontend tidak rusak (karena frontend ekspektasi kdpoli dan nmpoli)
+        $mappedResults = $results->map(function($item) {
+            return [
+                "kdpoli" => $item["kdpoli"] ?? $item["kdsubspesialis"] ?? "",
+                "nmpoli" => $item["nmpoli"] ?? $item["nmsubspesialis"] ?? ""
+            ];
+        });
+
+        return response()->json(["success" => true, "data" => $mappedResults]);
     }
+
 
     public function editMappingPoli($kode_poli)
     {
@@ -121,18 +141,35 @@ class MappingBpjsController extends Controller
     public function searchBpjsDokter(Request $request)
     {
         $keyword = strtolower($request->query("keyword", ""));
-        
         if (strlen($keyword) < 3) {
             return response()->json(["success" => false, "message" => "Minimal 3 karakter"]);
         }
 
-        $results = collect($this->mockBpjsDokter)->filter(function ($item) use ($keyword) {
-            return str_contains(strtolower($item["kddokter"]), $keyword) || 
-                   str_contains(strtolower($item["nmdokter"]), $keyword);
+        $bpjsService = new \App\Services\BpjsService();
+        $response = $bpjsService->getReferensiDokter();
+
+        if (isset($response["metadata"]) && !in_array($response["metadata"]["code"], [1, 200, "1", "200"])) {
+            return response()->json(["success" => false, "message" => $response["metadata"]["message"] ?? "Gagal mengambil data dari BPJS"]);
+        }
+
+        $dataDokter = $response["response"] ?? [];
+
+        $results = collect($dataDokter)->filter(function ($item) use ($keyword) {
+            return str_contains(strtolower($item["kodedokter"] ?? ""), $keyword) || 
+                   str_contains(strtolower($item["namadokter"] ?? ""), $keyword);
         })->values();
 
-        return response()->json(["success" => true, "data" => $results]);
+        // Normalisasi response agar frontend tidak rusak
+        $mappedResults = $results->map(function($item) {
+            return [
+                "kddokter" => $item["kodedokter"] ?? "",
+                "nmdokter" => $item["namadokter"] ?? ""
+            ];
+        });
+
+        return response()->json(["success" => true, "data" => $mappedResults]);
     }
+
 
     public function editMappingDokter($id_dokter)
     {
@@ -167,6 +204,9 @@ class MappingBpjsController extends Controller
         return redirect()->back()->with('success', 'Mapping Dokter BPJS berhasil dihapus!');
     }
 }
+
+
+
 
 
 

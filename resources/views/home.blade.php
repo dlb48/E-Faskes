@@ -57,6 +57,12 @@
                 <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-database text-emerald-500 mr-2"></i> Master Data</h2>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <a href="{{ route('penjamin.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-emerald-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-hand-holding-dollar text-slate-400 group-hover:text-emerald-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-emerald-700 text-sm">Penjamin</span>
+                </a>
                 <a href="{{ route('jadwal.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all group bg-white">
                     <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-emerald-50 transition-colors shrink-0">
                         <i class="fa-solid fa-calendar-check text-slate-400 group-hover:text-emerald-600 text-lg transition-colors"></i>
@@ -238,6 +244,8 @@
     });
 </script>
 @endsection
+
+
 
 
 

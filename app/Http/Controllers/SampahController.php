@@ -9,6 +9,7 @@ use App\Models\Perawat;
 use App\Models\Poliklinik;
 use App\Models\Departemen;
 use App\Models\Jabatan;
+use App\Models\Penjamin;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,7 @@ class SampahController extends Controller
             'poliklinik' => Poliklinik::onlyTrashed()->get(),
             'departemen' => Departemen::onlyTrashed()->get(),
             'jabatan' => Jabatan::onlyTrashed()->get(),
+            'penjamin' => Penjamin::onlyTrashed()->get(),
         ];
         return view('sampah.index', compact('data'));
     }
@@ -37,6 +39,7 @@ class SampahController extends Controller
             'poliklinik' => new Poliklinik,
             'departemen' => new Departemen,
             'jabatan' => new Jabatan,
+            'penjamin' => new Penjamin,
             default => abort(404),
         };
     }
@@ -112,5 +115,6 @@ class SampahController extends Controller
         return back()->with('success', $msg);
     }
 }
+
 
 

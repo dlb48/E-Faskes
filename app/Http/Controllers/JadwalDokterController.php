@@ -18,7 +18,7 @@ class JadwalDokterController extends Controller
     public function create()
     {
         $dokters = Dokter::with('pegawai')->get();
-        $polikliniks = Poliklinik::all();
+        $polikliniks = Poliklinik::where('status_aktif', true)->orderBy('nama_poli')->get();
         return view('jadwal.create', compact('dokters', 'polikliniks'));
     }
 
@@ -60,7 +60,7 @@ class JadwalDokterController extends Controller
     {
         $jadwal = JadwalDokter::findOrFail($id);
         $dokters = Dokter::with('pegawai')->get();
-        $polikliniks = Poliklinik::all();
+        $polikliniks = Poliklinik::where('status_aktif', true)->orderBy('nama_poli')->get();
         
         return view('jadwal.edit', compact('jadwal', 'dokters', 'polikliniks'));
     }

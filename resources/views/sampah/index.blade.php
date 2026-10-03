@@ -134,6 +134,36 @@
         </div>
         @endif
 
+                <!-- Data Penjamin -->
+        @if($data['penjamin']->count() > 0)
+        <div class="mb-8">
+            <h2 class="text-lg font-bold text-slate-800 mb-3"><i class="fa-solid fa-hand-holding-dollar mr-2 text-slate-400"></i> Penjamin ({{ $data['penjamin']->count() }})</h2>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
+                        <tr>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">ID Penjamin</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Penjamin</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        @foreach($data['penjamin'] as $d)
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_penjamin_{{ $d->id_penjamin }}').click()">
+                            <td class="border border-slate-300 px-3 py-2 text-center">
+                                <input type="checkbox" name="selected_items[]" id="check_penjamin_{{ $d->id_penjamin }}" value="penjamin|{{ $d->id_penjamin }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
+                            </td>
+                            <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->id_penjamin }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->nama_penjamin }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
+
         <!-- Data Jabatan -->
         @if($data['jabatan']->count() > 0)
         <div class="mb-8">
@@ -319,6 +349,7 @@
     }
 </script>
 @endsection
+
 
 
 

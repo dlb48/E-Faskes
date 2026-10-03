@@ -12,3 +12,4 @@ class PengaturanBpjs extends Model
     protected $table = 'pengaturan_bpjs';
     protected $guarded = ['id'];
 }
+

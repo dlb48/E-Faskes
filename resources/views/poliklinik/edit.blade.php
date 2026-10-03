@@ -38,7 +38,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Kode Poli <span class="text-red-500">*</span></label>
                     <input type="text" name="kode_poli" value="{{ old('kode_poli', $poliklinik->kode_poli) }}" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
-                    <p class="text-xs text-slate-500 mt-1">Gunakan kode standar BPJS jika memungkinkan.</p>
+                    <p class="text-xs text-slate-500 mt-1">Gunakan kode standar BPJS jika memungkinkan. Perubahan ID akan disinkronkan (Cascade).</p>
                 </div>
 
                 <div>
@@ -77,4 +77,5 @@
     </div>
 </div>
 @endsection
+
 

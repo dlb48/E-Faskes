@@ -37,8 +37,8 @@
             <div class="grid grid-cols-1 gap-6 mb-6">
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">ID jabatan <span class="text-red-500">*</span></label>
-                    <input type="text" name="id_jabatan" value="{{ old('id_jabatan', $jabatan->id_jabatan) }}" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 bg-slate-100 cursor-not-allowed" readonly>
-                    <p class="text-xs text-slate-500 mt-1">ID jabatan tidak dapat diubah setelah dibuat.</p>
+                    <input type="text" name="id_jabatan" value="{{ old('id_jabatan', $jabatan->id_jabatan) }}" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
+                    <p class="text-xs text-slate-500 mt-1">Hati-hati saat mengubah ID. Perubahan akan otomatis disinkronkan ke seluruh data terkait (Cascade Update).</p>
                 </div>
 
                 <div>

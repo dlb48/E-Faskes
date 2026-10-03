@@ -22,7 +22,7 @@ class JabatanController extends Controller
     {
         // Auto-generate ID if empty (checkbox was checked)
         if (empty($request->id_jabatan)) {
-            $lastJabatan = Jabatan::orderBy('id_jabatan', 'desc')->first();
+            $lastJabatan = Jabatan::withTrashed()->orderBy('id_jabatan', 'desc')->first();
             if ($lastJabatan && preg_match('/^JBT-(\d+)$/', $lastJabatan->id_jabatan, $matches)) {
                 $nextId = (int)$matches[1] + 1;
                 $request->merge(['id_jabatan' => 'JBT-' . str_pad($nextId, 3, '0', STR_PAD_LEFT)]);
@@ -75,3 +75,5 @@ class JabatanController extends Controller
         return redirect()->route('jabatan.index')->with('success', count($ids) . ' Data Jabatan berhasil dihapus.');
     }
 }
+
+

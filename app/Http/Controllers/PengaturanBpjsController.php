@@ -45,3 +45,4 @@ class PengaturanBpjsController extends Controller
             ->with('success', 'Konfigurasi Bridging BPJS JKN berhasil disimpan!');
     }
 }
+

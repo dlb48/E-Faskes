@@ -21,4 +21,9 @@ class Pendaftaran extends Model
     {
         return $this->belongsTo(Poliklinik::class, 'kode_poli', 'kode_poli');
     }
+
+    public function penjamin()
+    {
+        return $this->belongsTo(Penjamin::class, 'id_penjamin', 'id_penjamin');
+    }
 }

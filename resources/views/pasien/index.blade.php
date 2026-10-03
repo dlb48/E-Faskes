@@ -51,10 +51,11 @@
                         <td class="border border-slate-300 px-3 py-2 whitespace-nowrap font-bold text-slate-900">{{ $p->nama }}</td>
                         <td class="border border-slate-300 px-3 py-2 whitespace-nowrap text-slate-700 font-mono">{{ $p->nik }}</td>
                         <td class="border border-slate-300 px-3 py-2 whitespace-nowrap text-center">
-                            @if($p->jenis_pasien == 'BPJS')
-                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold">BPJS</span>
+                            @php $nama_penjamin = $p->penjamin ? $p->penjamin->nama_penjamin : $p->jenis_pasien; @endphp
+                            @if(stripos($nama_penjamin, 'bpjs') !== false)
+                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold uppercase">{{ $nama_penjamin }}</span>
                             @else
-                                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">UMUM</span>
+                                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold uppercase">{{ $nama_penjamin }}</span>
                             @endif
                         </td>
                         <td class="border border-slate-300 px-3 py-2 whitespace-nowrap text-slate-700 font-mono">{{ $p->no_kartu_bpjs ?? '-' }}</td>
@@ -209,3 +210,9 @@
 
 </script>
 @endsection
+
+
+
+
+
+

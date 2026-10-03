@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Data Poliklinik')
+@section('title', 'Data Penjamin')
 
 @section('content')
 <div class="flex justify-between items-center mb-4">
     <div class="flex items-center gap-3">
-        <h1 class="text-2xl font-bold text-slate-900">Data Poliklinik</h1>
+        <h1 class="text-2xl font-bold text-slate-900">Data Penjamin</h1>
         <span class="bg-brand-100 text-brand-700 py-1 px-3 rounded-full text-xs font-bold border border-brand-200">
-            {{ $polikliniks->count() }} Total
+            {{ $Penjamins->count() }} Total
         </span>
     </div>
 </div>
@@ -22,37 +22,31 @@
             <table class="min-w-full border-collapse border border-slate-300 text-sm">
                 <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">Pilih</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Kode Poli</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Poliklinik</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10">
+                            <input type="checkbox" id="selectAll" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer" onclick="toggleAll(this)">
+                        </th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">ID Penjamin</th>
+                        <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Penjamin</th>
                         <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Deskripsi</th>
-                        <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Status</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">
-                    @forelse($polikliniks as $p)
-                    <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('radio_{{ $p->kode_poli }}').click()">
+                    @forelse($Penjamins as $p)
+                    <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_{{ $p->id_penjamin }}').click()">
                         <td class="border border-slate-300 px-3 py-2 text-center">
-                            <input type="radio" name="selected_poli" id="radio_{{ $p->kode_poli }}" value="{{ $p->kode_poli }}" 
-                                   class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer"
-                                   onclick="enableButtons('{{ $p->kode_poli }}', '{{ $p->nama_poli }}'); event.stopPropagation();">
+                            <input type="checkbox" name="selected_ids[]" id="check_{{ $p->id_penjamin }}" value="{{ $p->id_penjamin }}" 
+                                   class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox"
+                                   onclick="updateSelection(); event.stopPropagation();">
                         </td>
-                        <td class="border border-slate-300 px-3 py-2 text-center font-medium text-slate-900">{{ $p->kode_poli }}</td>
-                        <td class="border border-slate-300 px-3 py-2 font-semibold text-brand-700">{{ $p->nama_poli }}</td>
+                        <td class="border border-slate-300 px-3 py-2 text-center font-medium text-slate-900">{{ $p->id_penjamin }}</td>
+                        <td class="border border-slate-300 px-3 py-2 font-semibold text-brand-700">{{ $p->nama_penjamin }}</td>
                         <td class="border border-slate-300 px-3 py-2 text-slate-600">{{ $p->deskripsi ?? '-' }}</td>
-                        <td class="border border-slate-300 px-3 py-2 text-center">
-                            @if($p->status_aktif)
-                                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-green-200">Aktif</span>
-                            @else
-                                <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-red-200">Nonaktif</span>
-                            @endif
-                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-8 text-center text-slate-500 border border-slate-300">
-                            <i class="fa-solid fa-stethoscope text-4xl mb-3 text-slate-300 block"></i>
-                            Belum ada data poliklinik.
+                        <td colspan="4" class="px-4 py-8 text-center text-slate-500 border border-slate-300">
+                            <i class="fa-solid fa-id-badge text-4xl mb-3 text-slate-300 block"></i>
+                            Belum ada Data penjamin.
                         </td>
                     </tr>
                     @endforelse
@@ -66,18 +60,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center justify-between gap-4">
             
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto">
-                <div class="relative w-full sm:w-64">
+                <div class="relative w-full sm:w-72">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fa-solid fa-search text-slate-400 text-sm"></i>
                     </div>
-                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari poliklinik..." class="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 w-full transition-all bg-slate-50">
+                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari penjamin..." class="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 w-full transition-all bg-slate-50">
                 </div>
-                
-                <select id="statusFilter" onchange="filterTable()" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 w-full sm:w-auto">
-                    <option value="">Semua Status</option>
-                    <option value="aktif">Aktif</option>
-                    <option value="nonaktif">Nonaktif</option>
-                </select>
                 
                 <div class="text-xs text-slate-500 hidden lg:flex items-center">
                     <i class="fa-solid fa-circle-info mr-1.5 text-brand-500"></i>
@@ -86,7 +74,7 @@
             </div>
             
             <div class="flex items-center gap-2 overflow-x-auto shrink-0 pb-1 md:pb-0">
-                <a href="{{ route('poliklinik.create') }}" class="whitespace-nowrap bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
+                <a href="{{ route('penjamin.create') }}" class="whitespace-nowrap bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
                     <i class="fa-solid fa-plus mr-1.5"></i> Tambah
                 </a>
                 
@@ -111,19 +99,13 @@
     function filterTable() {
         const input = document.getElementById("searchInput");
         const filter = input.value.toLowerCase();
-        const statusFilter = document.getElementById("statusFilter") ? document.getElementById("statusFilter").value.toLowerCase() : "";
         const tbody = document.querySelector("tbody");
         const rows = tbody.querySelectorAll("tr");
 
         rows.forEach(row => {
             if (row.cells.length === 1) return;
             const textContent = row.textContent.toLowerCase();
-            const statusCell = row.cells[4] ? row.cells[4].textContent.toLowerCase() : "";
-            
-            const matchKeyword = textContent.includes(filter);
-            const matchStatus = statusFilter === "" || statusCell.trim() === statusFilter;
-            
-            if (matchKeyword && matchStatus) {
+            if (textContent.includes(filter)) {
                 row.style.display = "";
             } else {
                 row.style.display = "none";
@@ -131,31 +113,65 @@
         });
     }
 
-    function enableButtons(id, name) {
-        selectedId = id;
-        document.getElementById('btnUbah').disabled = false;
-        document.getElementById('btnHapus').disabled = false;
+    function toggleAll(source) {
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(cb => {
+            cb.checked = source.checked;
+        });
+        updateSelection();
+    }
+
+    function updateSelection() {
+        const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+        const selectedCount = checkboxes.length;
         
-        document.getElementById('selectionText').innerHTML = `Poliklinik terpilih: <strong>${name}</strong>`;
-        
+        // Reset styles
         document.querySelectorAll('tr').forEach(tr => tr.classList.remove('bg-blue-50'));
-        const selectedRadio = document.getElementById('radio_' + id);
-        if (selectedRadio) {
-            selectedRadio.closest('tr').classList.add('bg-blue-50');
+        checkboxes.forEach(cb => cb.closest('tr').classList.add('bg-blue-50'));
+
+        const btnUbah = document.getElementById('btnUbah');
+        const btnHapus = document.getElementById('btnHapus');
+        const selectionText = document.getElementById('selectionText');
+
+        if (selectedCount === 0) {
+            btnUbah.disabled = true;
+            btnHapus.disabled = true;
+            selectionText.innerHTML = 'Pilih data untuk diubah/dihapus.';
+            selectedId = null;
+        } else if (selectedCount === 1) {
+            btnUbah.disabled = false;
+            btnHapus.disabled = false;
+            selectedId = checkboxes[0].value;
+            const name = checkboxes[0].closest('tr').querySelector('td:nth-child(3)').innerText;
+            selectionText.innerHTML = `1 data terpilih: <strong>${name}</strong>`;
+        } else {
+            btnUbah.disabled = true; // Disabled for multiple selection
+            btnHapus.disabled = false;
+            selectedId = null;
+            selectionText.innerHTML = `<strong>${selectedCount}</strong> data terpilih.`;
+        }
+        
+        // Update Select All checkbox state
+        const allCheckboxes = document.querySelectorAll('.row-checkbox');
+        const selectAllCheckbox = document.getElementById('selectAll');
+        if(allCheckboxes.length > 0) {
+            selectAllCheckbox.checked = selectedCount === allCheckboxes.length;
         }
     }
 
     function doEdit() {
         if (selectedId) {
-            window.location.href = `/poliklinik/${selectedId}/edit`;
+            window.location.href = `/penjamin/${selectedId}/edit`;
         }
     }
 
     function doDelete() {
-        if (!selectedId) return;
+        const selectedCount = document.querySelectorAll('.row-checkbox:checked').length;
+        if (selectedCount === 0) return;
+        
         Swal.fire({
             title: 'Konfirmasi Hapus',
-            text: 'Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.',
+            text: `Apakah Anda yakin ingin menghapus ${selectedCount} data Penjamin terpilih? Tindakan ini tidak dapat dibatalkan.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
@@ -165,7 +181,8 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const form = document.getElementById('actionForm');
-                form.action = `/poliklinik/${selectedId}`;
+                // Use bulk route
+                form.action = `{{ route('penjamin.destroyBulk') }}`;
                 document.getElementById('formMethod').value = 'DELETE';
                 form.submit();
             }

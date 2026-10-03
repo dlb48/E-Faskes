@@ -9,19 +9,21 @@ class PasienController extends Controller
 {
     public function index()
     {
-        $pasiens = Pasien::latest()->get();
+        $pasiens = Pasien::with('penjamin')->latest()->get();
         return view('pasien.index', compact('pasiens'));
     }
 
     public function create()
     {
-        return view('pasien.create');
+        $penjamins = \App\Models\Penjamin::all();
+        return view('pasien.create', compact('penjamins'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'jenis_pasien' => 'required|in:Umum,BPJS',
+            'no_rm' => 'nullable|string|max:20|unique:pasien,no_rm',
+            'id_penjamin' => 'required|exists:penjamins,id_penjamin',
             'nik' => 'required|string|max:16|unique:pasien,nik',
             'no_kartu_bpjs' => 'nullable|string|max:13|unique:pasien,no_kartu_bpjs',
             'nama' => 'required|string|max:255',
@@ -50,11 +52,24 @@ class PasienController extends Controller
             'no_telepon_penanggung_jawab' => 'nullable|string|max:20'
         ]);
 
-        $no_rm = 'RM-' . date('ym') . '-' . str_pad(Pasien::count() + 1, 4, '0', STR_PAD_LEFT);
+        $no_rm = $request->no_rm;
+        if (empty($no_rm)) {
+            $prefix = 'RM-' . date('ym') . '-';
+            $lastPasien = Pasien::withTrashed()->where('no_rm', 'like', $prefix . '%')->orderBy('no_rm', 'desc')->first();
+            if ($lastPasien && preg_match('/^' . preg_quote($prefix, '/') . '(\d+)$/', $lastPasien->no_rm, $matches)) {
+                $no_rm = $prefix . str_pad((int)$matches[1] + 1, 4, '0', STR_PAD_LEFT);
+            } else {
+                $no_rm = $prefix . '0001';
+            }
+        }
+        
+        $penjamin_obj = \App\Models\Penjamin::find($request->id_penjamin);
+        $jenis_pasien = $penjamin_obj ? $penjamin_obj->nama_penjamin : 'Umum';
         
         Pasien::create([
             'no_rm' => $no_rm,
-            'jenis_pasien' => $request->jenis_pasien,
+            'id_penjamin' => $request->id_penjamin,
+            'jenis_pasien' => $jenis_pasien,
             'nik' => $request->nik,
             'no_kartu_bpjs' => $request->no_kartu_bpjs,
             'nama' => $request->nama,
@@ -83,13 +98,20 @@ class PasienController extends Controller
             'no_telepon_penanggung_jawab' => $request->no_telepon_penanggung_jawab
         ]);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Pasien Baru berhasil disimpan dengan No. RM: ' . $no_rm
+            ]);
+        }
         return redirect()->route('pasien.index')->with('success', 'Data Pasien Baru berhasil disimpan dengan No. RM: ' . $no_rm);
     }
 
     public function edit($nik)
     {
         $pasien = Pasien::findOrFail($nik);
-        return view('pasien.edit', compact('pasien'));
+        $penjamins = \App\Models\Penjamin::all();
+        return view('pasien.edit', compact('pasien', 'penjamins'));
     }
 
     public function update(Request $request, $nik)
@@ -97,7 +119,8 @@ class PasienController extends Controller
         $pasien = Pasien::findOrFail($nik);
         
         $request->validate([
-            'jenis_pasien' => 'required|in:Umum,BPJS',
+            'no_rm' => 'required|string|max:20|unique:pasien,no_rm,'.$pasien->nik.',nik',
+            'id_penjamin' => 'required|exists:penjamins,id_penjamin',
             'nik' => 'required|string|max:16|unique:pasien,nik,'.$pasien->nik.',nik',
             'no_kartu_bpjs' => 'nullable|string|max:13|unique:pasien,no_kartu_bpjs,'.$pasien->nik.',nik',
             'nama' => 'required|string|max:255',
@@ -126,6 +149,10 @@ class PasienController extends Controller
             'no_telepon_penanggung_jawab' => 'nullable|string|max:20'
         ]);
 
+        $penjamin_obj = \App\Models\Penjamin::find($request->id_penjamin);
+        $jenis_pasien = $penjamin_obj ? $penjamin_obj->nama_penjamin : 'Umum';
+        $request->merge(['jenis_pasien' => $jenis_pasien]);
+
         $pasien->update($request->all());
 
         return redirect()->route('pasien.index')->with('success', 'Data Pasien berhasil diperbarui.');
@@ -139,3 +166,6 @@ class PasienController extends Controller
         return redirect()->route('pasien.index')->with('success', 'Data Pasien berhasil dihapus.');
     }
 }
+
+
+

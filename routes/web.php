@@ -13,6 +13,9 @@ Route::get('/', function () {
 Route::get('/antrean', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
 Route::get('/antrean/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
 Route::post('/antrean', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+Route::get('/pendaftaran/{id}/edit', [PendaftaranController::class, 'edit'])->name('pendaftaran.edit');
+Route::put('/pendaftaran/{id}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');
+Route::delete('/pendaftaran/destroy', [PendaftaranController::class, 'destroy'])->name('pendaftaran.destroy');
 
 // Pasien
 Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
@@ -92,5 +95,19 @@ Route::delete('/mapping/dokter', [MappingBpjsController::class, 'destroyMappingD
 
 
 
+
+
+
+
+
+
+
+
+// Penjamin
+use App\Http\Controllers\PenjaminController;
+Route::delete('penjamin/bulk', [PenjaminController::class, 'destroyBulk'])->name('penjamin.destroyBulk');
+Route::resource('penjamin', PenjaminController::class)->parameters([
+    'penjamin' => 'penjamin'
+]);
 
 

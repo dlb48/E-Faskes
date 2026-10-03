@@ -42,7 +42,20 @@
 
                 <div class="md:col-span-2 my-2 border-t border-slate-100"></div>
 
-                <!-- Cons ID -->
+                <!-- Base URL -->
+                        <div class="mb-5">
+                            <label for="base_url" class="block text-sm font-semibold text-slate-700 mb-2">Base URL API BPJS</label>
+                            <input type="url" name="base_url" id="base_url" 
+                                value="{{ old('base_url', $pengaturan->base_url ?? '') }}" required
+                                placeholder="Contoh: https://apijkn-dev.bpjs-kesehatan.go.id/vclaim-rest-dev"
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono text-sm bg-white">
+                            @error('base_url')
+                                <p class="text-rose-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                            <p class="text-xs text-slate-500 mt-1">Masukkan URL dasar sesuai environment (Development / Production).</p>
+                        </div>
+
+                        <!-- Cons ID -->
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Cons ID (Consumer ID)</label>
                     <input type="text" name="cons_id" value="{{ old('cons_id', $pengaturan->cons_id) }}" 
@@ -92,3 +105,4 @@
     </div>
 </div>
 @endsection
+

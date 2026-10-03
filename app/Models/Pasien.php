@@ -21,4 +21,10 @@ class Pasien extends Model
     {
         return $this->hasMany(Pendaftaran::class);
     }
+
+    public function penjamin()
+    {
+        return $this->belongsTo(Penjamin::class, 'id_penjamin', 'id_penjamin');
+    }
 }
+

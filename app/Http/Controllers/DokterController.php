@@ -24,7 +24,7 @@ class DokterController extends Controller
             ->whereNotIn('nip', $existingDokterNips)
             ->get();
             
-        $polikliniks = Poliklinik::all();
+        $polikliniks = Poliklinik::where('status_aktif', 1)->get();
         
         return view('dokter.create', compact('pegawais', 'polikliniks'));
     }
@@ -33,7 +33,7 @@ class DokterController extends Controller
     {
         // Auto-generate ID if empty (checkbox was checked)
         if (empty($request->id_dokter)) {
-            $last = Dokter::orderBy('id_dokter', 'desc')->first();
+            $last = Dokter::withTrashed()->orderBy('id_dokter', 'desc')->first();
             if ($last && preg_match('/^DOK-(\d+)$/', $last->id_dokter, $matches)) {
                 $nextId = (int)$matches[1] + 1;
                 $request->merge(['id_dokter' => 'DOK-' . str_pad($nextId, 3, '0', STR_PAD_LEFT)]);
@@ -68,7 +68,7 @@ class DokterController extends Controller
     {
         $dokter = Dokter::findOrFail($id_dokter);
         $pegawais = Pegawai::where('nip', $dokter->nip)->get(); // Hanya tampilkan pegawai dia sendiri
-        $polikliniks = Poliklinik::all();
+        $polikliniks = Poliklinik::where('status_aktif', 1)->get();
         
         return view('dokter.edit', compact('dokter', 'pegawais', 'polikliniks'));
     }
@@ -77,12 +77,16 @@ class DokterController extends Controller
     {
         $dokter = Dokter::findOrFail($id_dokter);
         $request->validate([
+            'id_dokter' => 'required|unique:dokters,id_dokter,' . $dokter->id_dokter . ',id_dokter|unique:perawats,id_perawat',
+            'nip' => 'required|unique:dokters,nip,' . $dokter->id_dokter . ',id_dokter|unique:perawats,nip|exists:pegawai,nip',
             'no_sip' => 'required',
             'masa_berlaku_sip' => 'required|date',
             'poliklinik_id' => 'required|exists:poliklinik,kode_poli',
         ]);
 
         $dokter->update([
+            'id_dokter' => $request->id_dokter,
+            'nip' => $request->nip,
             'no_sip' => $request->no_sip,
             'masa_berlaku_sip' => $request->masa_berlaku_sip,
             'poliklinik_id' => $request->poliklinik_id,
@@ -98,3 +102,5 @@ class DokterController extends Controller
         return redirect()->route('dokter.index')->with('success', 'Data Dokter berhasil dihapus.');
     }
 }
+
+
