@@ -36,7 +36,7 @@
                     </div>
                     <span class="font-semibold text-slate-700 group-hover:text-blue-700 text-sm">Pendaftaran</span>
                 </a>
-                <a href="#" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
+                <a href="{{ route('rawat_jalan.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group bg-white">
                     <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-blue-50 transition-colors shrink-0">
                         <i class="fa-solid fa-stethoscope text-slate-400 group-hover:text-blue-600 text-lg transition-colors"></i>
                     </div>
@@ -244,6 +244,7 @@
     });
 </script>
 @endsection
+
 
 
 

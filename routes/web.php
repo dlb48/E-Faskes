@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\RawatJalanController;
 use App\Http\Controllers\PasienController;
 
 // Dashboard / Home
@@ -16,6 +17,11 @@ Route::post('/antrean', [PendaftaranController::class, 'store'])->name('pendafta
 Route::get('/pendaftaran/{id}/edit', [PendaftaranController::class, 'edit'])->name('pendaftaran.edit');
 Route::put('/pendaftaran/{id}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');
 Route::delete('/pendaftaran/destroy', [PendaftaranController::class, 'destroy'])->name('pendaftaran.destroy');
+
+// Rawat Jalan
+Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])->name('rawat_jalan.index');
+Route::get('/rawat-jalan/{id}/periksa', [RawatJalanController::class, 'periksa'])->name('rawat_jalan.periksa');
+Route::post('/rawat-jalan/{id}/assesmen', [RawatJalanController::class, 'storeAssesmen'])->name('rawat_jalan.store_assesmen');
 
 // Pasien
 Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Pendaftaran;
 use App\Models\Poliklinik;
 use App\Models\Pasien;
+use App\Models\Penjamin;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,12 +69,16 @@ class JknAntreanController extends Controller
         $no_antrean = $poli->kode_poli . '-' . str_pad($jumlahHariIni + 1, 3, '0', STR_PAD_LEFT);
         $kode_booking = 'JKN' . $tanggal->format('Ymd') . strtoupper(substr(uniqid(), -4));
 
+        // Get BPJS Penjamin ID
+        $bpjsPenjamin = Penjamin::where('nama_penjamin', 'like', '%BPJS%')->first();
+        $idPenjamin = $bpjsPenjamin ? $bpjsPenjamin->id_penjamin : 1;
+
         // Simpan pendaftaran
         $pendaftaran = Pendaftaran::create([
             'nik_pasien' => $pasien->nik,
             'kode_poli' => $poli->kode_poli,
+            'id_penjamin' => $idPenjamin,
             'no_antrean' => $no_antrean,
-            'jenis_pasien' => 'BPJS',
             'sumber_daftar' => 'Mobile JKN',
             'kode_booking' => $kode_booking,
             'status' => 'Menunggu',
@@ -121,5 +126,49 @@ class JknAntreanController extends Controller
         $pendaftaran->update(['status' => 'Batal']);
 
         return $this->formatResponse(200, 'Ok');
+    }
+
+    /**
+     * Endpoint: Cek Status Antrean Poli
+     * GET /api/jkn/antrean/status/{kode_poli}/{tanggal_periksa}
+     */
+    public function statusAntrean($kodepoli, $tanggalperiksa)
+    {
+        $poli = Poliklinik::where('kode_poli', $kodepoli)->first();
+        if (!$poli) {
+            return $this->formatResponse(201, 'Poliklinik tidak ditemukan');
+        }
+
+        $tanggal = Carbon::parse($tanggalperiksa);
+        
+        $totalAntrean = Pendaftaran::where('kode_poli', $kodepoli)
+            ->whereDate('tanggal_periksa', $tanggal)
+            ->count();
+
+        $antreanDilayani = Pendaftaran::where('kode_poli', $kodepoli)
+            ->whereDate('tanggal_periksa', $tanggal)
+            ->whereIn('status', ['Diperiksa', 'Selesai'])
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $antreanBelumDilayani = Pendaftaran::where('kode_poli', $kodepoli)
+            ->whereDate('tanggal_periksa', $tanggal)
+            ->where('status', 'Menunggu')
+            ->count();
+
+        $responseData = [
+            'namapoli' => $poli->nama_poli,
+            'namadokter' => 'Dokter Umum',
+            'totalantrean' => $totalAntrean,
+            'sisaantrean' => $antreanBelumDilayani,
+            'antreanpanggil' => $antreanDilayani ? $antreanDilayani->no_antrean : '-',
+            'sisakuotajkn' => 100 - $totalAntrean,
+            'kuotajkn' => 100,
+            'sisakuotanonjkn' => 100,
+            'kuotanonjkn' => 100,
+            'keterangan' => 'Jam operasional 08:00 - 14:00'
+        ];
+
+        return $this->formatResponse(200, 'Ok', $responseData);
     }
 }
