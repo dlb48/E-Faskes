@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rme_diagnosas', function (Blueprint $table) {
+        Schema::create('master_icd10s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pemeriksaan_id');
-            $table->string('kode_icd10')->nullable();
+            $table->string('kode_icd10')->unique();
             $table->string('nama_diagnosa');
-            $table->enum('jenis_diagnosa', ['Primer', 'Sekunder', 'Komplikasi'])->default('Primer');
-            $table->text('keterangan')->nullable();
             $table->timestamps();
-
-            $table->foreign('pemeriksaan_id')->references('id')->on('pemeriksaans')->onDelete('cascade');
         });
     }
 
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rme_diagnosas');
+        Schema::dropIfExists('master_icd10s');
     }
 };

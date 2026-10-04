@@ -10,6 +10,7 @@ use App\Models\Poliklinik;
 use App\Models\Departemen;
 use App\Models\Jabatan;
 use App\Models\Penjamin;
+use App\Models\MasterIcd10;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,7 @@ class SampahController extends Controller
             'departemen' => Departemen::onlyTrashed()->get(),
             'jabatan' => Jabatan::onlyTrashed()->get(),
             'penjamin' => Penjamin::onlyTrashed()->get(),
+            'icd10' => MasterIcd10::onlyTrashed()->get(),
         ];
         return view('sampah.index', compact('data'));
     }
@@ -40,6 +42,7 @@ class SampahController extends Controller
             'departemen' => new Departemen,
             'jabatan' => new Jabatan,
             'penjamin' => new Penjamin,
+            'icd10' => new MasterIcd10,
             default => abort(404),
         };
     }

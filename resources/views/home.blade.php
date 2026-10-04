@@ -81,6 +81,12 @@
                     </div>
                     <span class="font-semibold text-slate-700 group-hover:text-emerald-700 text-sm">Data Pasien</span>
                 </a>
+                <a href="{{ route('icd10.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all group bg-white">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mr-3 group-hover:bg-emerald-50 transition-colors shrink-0">
+                        <i class="fa-solid fa-book-medical text-slate-400 group-hover:text-emerald-600 text-lg transition-colors"></i>
+                    </div>
+                    <span class="font-semibold text-slate-700 group-hover:text-emerald-700 text-sm">ICD-10</span>
+                </a>
             </div>
         </div>
 

@@ -13,22 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rme_anamnesas', function (Blueprint $table) {
+        Schema::create('rme_pemeriksaan_dokter', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pemeriksaan_id');
+            $table->unsignedBigInteger('pendaftaran_id');
+            // Anamnesa
             $table->text('keluhan_utama')->nullable();
             $table->text('riwayat_penyakit_sekarang')->nullable();
             $table->text('riwayat_alergi')->nullable();
             $table->string('kesadaran')->nullable();
-            $table->string('tensi')->nullable(); // misal '120/80'
-            $table->decimal('suhu_tubuh', 5, 2)->nullable();
-            $table->integer('denyut_nadi')->nullable();
-            $table->integer('laju_pernapasan')->nullable();
-            $table->decimal('berat_badan', 5, 2)->nullable();
-            $table->decimal('tinggi_badan', 5, 2)->nullable();
+            
+            // Diagnosa
+            $table->string('kode_icd10')->nullable();
+            $table->string('nama_diagnosa')->nullable();
+            $table->text('keterangan_diagnosa')->nullable();
             $table->timestamps();
 
-            $table->foreign('pemeriksaan_id')->references('id')->on('pemeriksaans')->onDelete('cascade');
+            $table->foreign('pendaftaran_id')->references('id')->on('pendaftaran')->onDelete('cascade');
         });
     }
 
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rme_anamnesas');
+        Schema::dropIfExists('rme_pemeriksaan_dokter');
     }
 };

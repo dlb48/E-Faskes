@@ -251,6 +251,35 @@
         </div>
         @endif
 
+        <!-- Data ICD-10 -->
+        @if($data['icd10']->count() > 0)
+        <div class="mb-8">
+            <h2 class="text-lg font-bold text-slate-800 mb-3"><i class="fa-solid fa-book-medical mr-2 text-slate-400"></i> ICD-10 ({{ $data['icd10']->count() }})</h2>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-slate-200 sticky top-0 z-10 shadow-sm">
+                        <tr>
+                            <th scope="col" class="border border-slate-300 px-3 py-2 text-center w-10"><input type="checkbox" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer select-all-cb" onclick="toggleAll(this)"></th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Kode ICD-10</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Nama Diagnosa</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        @foreach($data['icd10'] as $d)
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="document.getElementById('check_icd10_{{ $d->id }}').click()">
+                            <td class="border border-slate-300 px-3 py-2 text-center">
+                                <input type="checkbox" name="selected_items[]" id="check_icd10_{{ $d->id }}" value="icd10|{{ $d->id }}" class="w-4 h-4 text-brand-600 border-slate-300 focus:ring-brand-500 rounded cursor-pointer row-checkbox" onclick="updateSelection(); event.stopPropagation();">
+                            </td>
+                            <td class="border border-slate-300 px-3 py-2 font-medium text-slate-900">{{ $d->kode_icd10 }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ $d->nama_diagnosa }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
         <!-- Button Bar Bawah (Action Bar) -->
         <div class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 z-50 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)] transition-all">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -349,6 +378,7 @@
     }
 </script>
 @endsection
+
 
 
 

@@ -206,7 +206,7 @@
         const checked = document.querySelectorAll(".row-checkbox:checked");
         if (checked.length === 1) {
             const id = checked[0].value;
-            window.location.href = `/rawat-jalan/${id}/periksa`;
+            window.location.href = `/rawat-jalan/${id}/assesmen`;
         }
     }
 </script>

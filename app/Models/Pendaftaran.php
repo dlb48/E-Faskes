@@ -26,4 +26,9 @@ class Pendaftaran extends Model
     {
         return $this->belongsTo(Penjamin::class, 'id_penjamin', 'id_penjamin');
     }
+
+    public function pemeriksaanDokter()
+    {
+        return $this->hasOne(RmePemeriksaanDokter::class, 'pendaftaran_id', 'id');
+    }
 }

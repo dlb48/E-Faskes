@@ -20,8 +20,10 @@ Route::delete('/pendaftaran/destroy', [PendaftaranController::class, 'destroy'])
 
 // Rawat Jalan
 Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])->name('rawat_jalan.index');
-Route::get('/rawat-jalan/{id}/periksa', [RawatJalanController::class, 'periksa'])->name('rawat_jalan.periksa');
+Route::get('/rawat-jalan/{id}/assesmen', [RawatJalanController::class, 'periksa'])->name('rawat_jalan.assesmen');
 Route::post('/rawat-jalan/{id}/assesmen', [RawatJalanController::class, 'storeAssesmen'])->name('rawat_jalan.store_assesmen');
+Route::get('/rawat-jalan/{id}/anamnesa', [RawatJalanController::class, 'anamnesa'])->name('rawat_jalan.anamnesa');
+Route::post('/rawat-jalan/{id}/anamnesa', [RawatJalanController::class, 'storeAnamnesa'])->name('rawat_jalan.store_anamnesa');
 
 // Pasien
 Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
@@ -115,5 +117,13 @@ Route::delete('penjamin/bulk', [PenjaminController::class, 'destroyBulk'])->name
 Route::resource('penjamin', PenjaminController::class)->parameters([
     'penjamin' => 'penjamin'
 ]);
+
+
+
+// Master ICD-10
+use App\Http\Controllers\MasterIcd10Controller;
+Route::get('/icd10/search', [MasterIcd10Controller::class, 'search'])->name('icd10.search');
+Route::delete('/icd10/destroyBulk', [MasterIcd10Controller::class, 'destroyBulk'])->name('icd10.destroyBulk');
+Route::resource('icd10', MasterIcd10Controller::class);
 
 

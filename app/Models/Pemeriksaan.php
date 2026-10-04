@@ -22,16 +22,6 @@ class Pemeriksaan extends Model
         return $this->belongsTo(Dokter::class, 'id_dokter', 'id_dokter');
     }
 
-    public function anamnesa()
-    {
-        return $this->hasOne(RmeAnamnesa::class, 'pemeriksaan_id', 'id');
-    }
-
-    public function diagnosa()
-    {
-        return $this->hasMany(RmeDiagnosa::class, 'pemeriksaan_id', 'id');
-    }
-
     public function resep()
     {
         return $this->hasMany(RmeResepObat::class, 'pemeriksaan_id', 'id');

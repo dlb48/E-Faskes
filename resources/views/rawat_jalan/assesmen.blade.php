@@ -22,10 +22,27 @@
 
         <!-- Daftar Menu -->
         <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
-            <a href="#" class="flex items-center px-4 py-3 bg-brand-50 text-brand-700 border border-brand-100 font-bold text-xs rounded-lg shadow-sm leading-tight">
+            <a href="{{ route('rawat_jalan.assesmen', $pendaftaran->id) }}" class="flex items-center px-4 py-3 bg-brand-50 text-brand-700 border border-brand-100 font-bold text-[11px] rounded-lg shadow-sm leading-tight">
                 <i class="fa-solid fa-user-nurse w-5 text-center mr-2"></i> 1. Asesmen Awal<br>Keperawatan
             </a>
-            <!-- Menu lain bisa ditambahkan nanti -->
+            <a href="{{ route('rawat_jalan.anamnesa', $pendaftaran->id) }}" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 border border-transparent font-bold text-[11px] rounded-lg transition-colors leading-tight">
+                <i class="fa-solid fa-user-doctor w-5 text-center mr-2 text-slate-400"></i> 2. Anamnesa &<br>Diagnosa
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 border border-transparent font-bold text-[11px] rounded-lg transition-colors leading-tight">
+                <i class="fa-solid fa-syringe w-5 text-center mr-2 text-slate-400"></i> 3. Tindakan
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 border border-transparent font-bold text-[11px] rounded-lg transition-colors leading-tight">
+                <i class="fa-solid fa-microscope w-5 text-center mr-2 text-slate-400"></i> 4. Pemeriksaan<br>Penunjang
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 border border-transparent font-bold text-[11px] rounded-lg transition-colors leading-tight">
+                <i class="fa-solid fa-pills w-5 text-center mr-2 text-slate-400"></i> 5. Resep Dokter
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 border border-transparent font-bold text-[11px] rounded-lg transition-colors leading-tight">
+                <i class="fa-solid fa-notes-medical w-5 text-center mr-2 text-slate-400"></i> 6. Catatan Dokter
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 border border-transparent font-bold text-[11px] rounded-lg transition-colors leading-tight">
+                <i class="fa-solid fa-clock-rotate-left w-5 text-center mr-2 text-slate-400"></i> 7. Riwayat Pasien
+            </a>
         </nav>
         
         <!-- Tombol Kembali -->
@@ -69,6 +86,10 @@
                                 <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Napas</th>
                                 <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">BB</th>
                                 <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">TB</th>
+                                <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">LP</th>
+                                <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Nyeri</th>
+                                <th scope="col" class="border border-slate-300 px-3 py-2 text-center font-bold text-slate-700 uppercase">Jatuh</th>
+                                <th scope="col" class="border border-slate-300 px-3 py-2 text-left font-bold text-slate-700 uppercase">Alergi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200 bg-white">
@@ -83,10 +104,14 @@
                                 <td class="border border-slate-300 px-3 py-2 text-center">{{ $riwayat->frekuensi_napas ?? '-' }}</td>
                                 <td class="border border-slate-300 px-3 py-2 text-center">{{ $riwayat->berat_badan ?? '-' }}</td>
                                 <td class="border border-slate-300 px-3 py-2 text-center">{{ $riwayat->tinggi_badan ?? '-' }}</td>
+                                <td class="border border-slate-300 px-3 py-2 text-center">{{ $riwayat->lingkar_perut ?? '-' }}</td>
+                                <td class="border border-slate-300 px-3 py-2 text-center">{{ $riwayat->skala_nyeri !== null ? $riwayat->skala_nyeri : '-' }}</td>
+                                <td class="border border-slate-300 px-3 py-2 text-center text-[10px]">{{ $riwayat->resiko_jatuh ?? '-' }}</td>
+                                <td class="border border-slate-300 px-3 py-2 text-left truncate max-w-[100px]" title="{{ $riwayat->riwayat_alergi }}">{{ $riwayat->riwayat_alergi ?? '-' }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="9" class="border border-slate-300 px-5 py-6 text-center text-slate-400 italic">Belum ada data asesmen keperawatan.</td>
+                                <td colspan="13" class="border border-slate-300 px-5 py-6 text-center text-slate-400 italic">Belum ada data asesmen keperawatan.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -99,7 +124,7 @@
                 @csrf
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col mb-4">
                     
-                    <div class="px-5 py-4 border-b border-slate-100 bg-emerald-50/30 flex justify-between items-center rounded-t-xl">
+                    <div class="px-5 py-4 border-b border-emerald-100 bg-emerald-50 flex justify-between items-center rounded-t-xl">
                         <h2 class="font-bold text-emerald-800 text-sm flex items-center">
                             <i class="fa-solid fa-stethoscope mr-2 text-emerald-600"></i> Form Input TTV (Kunjungan Saat Ini)
                         </h2>
@@ -167,8 +192,78 @@
                                     <span class="text-xs font-medium text-slate-400 w-12">cm</span>
                                 </div>
                             </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Lingkar Perut</label>
+                                <div class="flex items-center gap-3">
+                                    <input type="number" step="0.1" name="lingkar_perut" value="{{ $assesmen->lingkar_perut }}" class="flex-1 rounded-lg border-slate-300 focus:border-brand-500 focus:ring-brand-500 text-sm p-2.5" placeholder="80">
+                                    <span class="text-xs font-medium text-slate-400 w-12">cm</span>
+                                </div>
+                            </div>
                         </div>
 
+                    </div>
+                </div>
+
+                <!-- SKRINING TAMBAHAN -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col mb-4">
+                    <div class="px-5 py-4 border-b border-indigo-100 bg-indigo-50 flex justify-between items-center rounded-t-xl">
+                        <h2 class="font-bold text-indigo-800 text-sm flex items-center">
+                            <i class="fa-solid fa-clipboard-check mr-2 text-indigo-600"></i> Skrining Tambahan (Keperawatan)
+                        </h2>
+                    </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Skala Nyeri (0 - 10)</label>
+                            <input type="number" id="skala_nyeri_input" name="skala_nyeri" value="{{ $assesmen->skala_nyeri }}" min="0" max="10" class="w-full rounded-lg border-slate-300 focus:border-brand-500 focus:ring-brand-500 text-sm p-2.5" placeholder="0 (Tidak nyeri)">
+                            
+                            <!-- Visual Pain Scale -->
+                            <div class="mt-3 flex justify-between items-center text-center bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                                <div class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform pain-scale-btn p-1 rounded-lg hover:bg-slate-200" onclick="document.getElementById('skala_nyeri_input').value = this.querySelector('span').innerText">
+                                    <i class="fa-regular fa-face-laugh text-emerald-500 text-xl mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-700">0</span>
+                                    <span class="text-[9px] text-slate-500 leading-tight mt-0.5">Tidak<br>Nyeri</span>
+                                </div>
+                                <div class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform pain-scale-btn p-1 rounded-lg hover:bg-slate-200" onclick="document.getElementById('skala_nyeri_input').value = this.querySelector('span').innerText">
+                                    <i class="fa-regular fa-face-smile text-lime-500 text-xl mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-700">2</span>
+                                    <span class="text-[9px] text-slate-500 leading-tight mt-0.5">Sedikit</span>
+                                </div>
+                                <div class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform pain-scale-btn p-1 rounded-lg hover:bg-slate-200" onclick="document.getElementById('skala_nyeri_input').value = this.querySelector('span').innerText">
+                                    <i class="fa-regular fa-face-meh text-yellow-500 text-xl mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-700">4</span>
+                                    <span class="text-[9px] text-slate-500 leading-tight mt-0.5">Sedang</span>
+                                </div>
+                                <div class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform pain-scale-btn p-1 rounded-lg hover:bg-slate-200" onclick="document.getElementById('skala_nyeri_input').value = this.querySelector('span').innerText">
+                                    <i class="fa-regular fa-face-frown text-orange-500 text-xl mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-700">6</span>
+                                    <span class="text-[9px] text-slate-500 leading-tight mt-0.5">Lumayan</span>
+                                </div>
+                                <div class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform pain-scale-btn p-1 rounded-lg hover:bg-slate-200" onclick="document.getElementById('skala_nyeri_input').value = this.querySelector('span').innerText">
+                                    <i class="fa-regular fa-face-sad-tear text-rose-500 text-xl mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-700">8</span>
+                                    <span class="text-[9px] text-slate-500 leading-tight mt-0.5">Sangat</span>
+                                </div>
+                                <div class="flex flex-col items-center cursor-pointer hover:scale-110 transition-transform pain-scale-btn p-1 rounded-lg hover:bg-slate-200" onclick="document.getElementById('skala_nyeri_input').value = this.querySelector('span').innerText">
+                                    <i class="fa-regular fa-face-sad-cry text-red-600 text-xl mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-700">10</span>
+                                    <span class="text-[9px] text-slate-500 leading-tight mt-0.5">Hebat</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Resiko Jatuh</label>
+                            <select name="resiko_jatuh" class="w-full rounded-lg border-slate-300 focus:border-brand-500 focus:ring-brand-500 text-sm p-2.5">
+                                <option value="">-- Pilih Resiko --</option>
+                                <option value="Tidak Berisiko" {{ $assesmen->resiko_jatuh == 'Tidak Berisiko' ? 'selected' : '' }}>Tidak Berisiko</option>
+                                <option value="Risiko Rendah" {{ $assesmen->resiko_jatuh == 'Risiko Rendah' ? 'selected' : '' }}>Risiko Rendah</option>
+                                <option value="Risiko Tinggi" {{ $assesmen->resiko_jatuh == 'Risiko Tinggi' ? 'selected' : '' }}>Risiko Tinggi</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Riwayat Alergi Makanan / Obat</label>
+                            <input type="text" name="riwayat_alergi" value="{{ $assesmen->riwayat_alergi }}" class="w-full rounded-lg border-slate-300 focus:border-brand-500 focus:ring-brand-500 text-sm p-2.5" placeholder="Ketik jenis alergi (contoh: Amoxicillin, Udang) atau '-' jika tidak ada">
+                        </div>
                     </div>
                 </div>
             </form>
@@ -178,7 +273,7 @@
         <!-- FOOTER (TOMBOL SIMPAN UBAH HAPUS) -->
         <div class="px-6 py-4 bg-white border-t border-slate-200 shrink-0 z-10 flex justify-end gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
             <button type="button" onclick="document.getElementById('formAssesmen').submit();" class="whitespace-nowrap bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors shadow-sm flex items-center">
-                <i class="fa-solid fa-save mr-1.5"></i> Simpan Data TTV
+                <i class="fa-solid fa-save mr-1.5"></i> Simpan
             </button>
         </div>
 
@@ -186,3 +281,4 @@
     
 </div>
 @endsection
+
